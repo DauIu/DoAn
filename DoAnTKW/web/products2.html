@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device=width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="'https://font.googleapis.com/css2? family-Poppins:wght@300;400;500600;700;&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="Gongcha.png" width="150px" height="150px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.html">TRANG CHỦ</a></li>
+                    <li><a href="products.html">SẢN PHẨM</a></li>
+                    <li><a href="products1.html">ĐẶT HÀNG</a></li>
+                    <li><a href="products2.html">LIÊN HỆ</a></li>
+                    <li><a href="products3.html">TÀI KHOẢN</a></li>
+                </ul>
+            </nav>
+            <img src="cart-1.png" width="30px" height="30px">
+            <img src="menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+    </div>
+    <div class="small-container cart-page">
+        <table>
+            <tr>
+                <th>Sản Phẩm</th>
+                <th>Số Lương</th>
+                <th>Tổng</th>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="cart-info">
+                        <img src="trs.jpg">
+                        <div>
+                            <p>Trà Sữa Chân Trâu</p>
+                            <small>Giá: 35.000</small>
+                            <a href="">Xóa</a>
+                        </div>
+                    </div>
+
+                </td>
+                <td><input type="number" value="1"></td>
+                <td>35.000Đ</td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="cart-info">
+                        <img src="suatuoi.png">
+                        <div>
+                            <p>Sữa Tươi Chân Trâu Đường Đen</p>
+                            <small>Giá: 40.000</small>
+                            <a href="">Xóa</a>
+                        </div>
+                    </div>
+
+                </td>
+                <td><input type="number" value="1"></td>
+                <td>40.000Đ</td>
+            </tr>
+            <tr>
+                <td>
+
+                    <div class="cart-info">
+                        <img src="trsbacha.jpg">
+                        <div>
+                            <p>Trà Sữa Bạc Hà</p>
+                            <small>Giá: 45.000</small>
+                            <a href="">Xóa</a>
+                        </div>
+                    </div>
+
+                </td>
+                <td><input type="number" value="1"></td>
+                <td>45.000Đ</td>
+            </tr>
+        </table>
+        <div class="total-price">
+            <table>
+                <tr>
+                    <td>Tổng</td>
+                    <td>
+                        35.000Đ x 1
+                        <br />
+                        40.000Đ x 1
+                        <br />
+                        45.000Đ x 1
+                    </td>
+                   
+                </tr>
+                <tr></tr>
+                <td>Thuế</td>
+                <td>10%</td>
+                </tr>
+                <tr></tr>
+                <td>Total</td>
+                <td>132.000Đ</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="small-container">
+        <div class="row row-2">
+            <h2>Thanh Toán</h2>
+            <p>View More</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Dowload Our App</h3>
+                    <p>Dowload App for Android and IOS mobile phone.</p>
+                    <div class="app-logo">
+                        <img src="app-2store.png">
+                        <img src="google-play-png-logo.png">
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img src="Gongcha.png">
+                    <p>Dowload App for Android and IOS mobile phone.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Liên Hệ Với Chúng Tôi</h3>
+                    <ul>
+                        <li>info@gongcha.com.vn</li>
+                        <li>0909678456</li>
+                    </ul>
+                </div>
+                <div class="footer-col-4">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                        <li>Instagram</li>
+                        <li>Youtobe</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">COPYRIGHT © 2023 GONG CHA VIỆT NAM</p>
+        </div>
+    </div>
+    <script>
+        var MenuItems = document.getElementById('MenuItems');
+
+        MenuItems.style.maxHeight = '0px';
+
+        function menutoggle() {
+            if (MenuItems.style.maxHeight == '0px') {
+                MenuItems.style.maxHeight = '200px';
+            } else {
+                MenuItems.style.maxHeight = '0px';
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+<body>
+
+</body>
+
+</html>

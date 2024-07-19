@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device=width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="'https://font.googleapis.com/css2? family-Poppins:wght@300;400;500600;700;&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="Gongcha.png" width="150px" height="150px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.html">TRANG CHỦ</a></li>
+                    <li><a href="products.html">SẢN PHẨM</a></li>
+                    <li><a href="products1.html">ĐẶT HÀNG</a></li>
+                    <li><a href="products2.html">LIÊN HỆ</a></li>
+                    <li><a href="products3.html">TÀI KHOẢN</a></li>
+                </ul>
+            </nav>
+            <img src="cart-1.png" width="30px" height="30px">
+            <img src="menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+    </div>
+    <div class="small-container single-product">
+        <div class="row">
+            <div class="col-2">
+                <img src="trs.jpg" width="100%" id="ProductImg">
+                <div class="small-img-row">
+                    <div class="small-img-col">
+                        <img src="socola.jpg" width="100%" class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="trsdao.jpg" width="100%" class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="olong.jpg" width="100%" class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="trsbacha.jpg" width="100%" class="small-img">
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <p>Home/ Trà Sữa</p>
+                <h1>Trà Sữa Chân Trâu</h1>
+                <h4>40.000Đ</h4>
+                <select>
+                    <option>Select Size</option>
+                    <option>Large</option>
+                    <option>Medium</option>
+                    <option>Small</option>
+                </select>
+                <input type="number" value="1">
+                <a href="" class="btn">Thêm vào giỏ hàng</a>
+                <h3>Chú Thích<i class="fa fa-indent"></i></h3>
+                <br>
+                <p>Nội dung</p>
+            </div>
+        </div>
+    </div>
+    <div class="small-container">
+        <div class="row row-2">
+            <h2>Các Sản Phẩm Khác</h2>
+            <p>View More</p>
+        </div>
+    </div>
+    <div class="small-container">
+        <div class="row">
+            <div class="col-4">
+                <a href="products1.html"><img src="suatuoi.png"></a>
+                <a href="products1.html">
+                    <h4>Sữa tươi chân trâu đường đen</h4>
+                </a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <p>40.000Đ</p>
+            </div>
+            <div class="col-4">
+                <a href="products1.html"> <img src="trsbacha.jpg"></a>
+                <a href="products1.html">
+                    <h4>Trà Sữa Bạc Hà</h4>
+                </a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <p>45.000Đ</p>
+            </div>
+            <div class="col-4">
+                <a href="products1.html"> <img src="olong.jpg"></a>
+                <a href="products1.html">
+                    <h4>Trà OLong Kem</h4>
+                </a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <p>40.000Đ</p>
+            </div>
+            <div class="col-4">
+                <a href="products1.html"> <img src="trs.jpg"></a>
+                <a href="products1.html">
+                    <h4>Trà Sữa Chân Trâu</h4>
+                </a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <p>35.000Đ</p>
+            </div>
+        </div>
+
+    </div>
+    <!-- phần thân -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Dowload Our App</h3>
+                    <p>Dowload App for Android and IOS mobile phone.</p>
+                    <div class="app-logo">
+                        <img src="app-2store.png">
+                        <img src="google-play-png-logo.png">
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img src="Gongcha.png">
+                    <p>Dowload App for Android and IOS mobile phone.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Liên Hệ Với Chúng Tôi</h3>
+                    <ul>
+                        <li>info@gongcha.com.vn</li>
+                        <li>0909678456</li>
+                    </ul>
+                </div>
+                <div class="footer-col-4">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                        <li>Instagram</li>
+                        <li>Youtobe</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">COPYRIGHT © 2023 GONG CHA VIỆT NAM</p>
+        </div>
+    </div>
+    <script>
+        var MenuItems = document.getElementById('MenuItems');
+
+        MenuItems.style.maxHeight = '0px';
+
+        function menutoggle() {
+            if (MenuItems.style.maxHeight == '0px') {
+                MenuItems.style.maxHeight = '200px';
+            } else {
+                MenuItems.style.maxHeight = '0px';
+            }
+        }
+    </script>
+
+    <script>
+        var ProductImg = document.getElementById('ProductImg');
+        var Smallimg = document.getElementsByClassName('small-img');
+
+        Smallimg[0].onclick = function () {
+            ProductImg.src = Smallimg[0].src;
+        }
+        Smallimg[1].onclick = function () {
+            ProductImg.src = Smallimg[1].src;
+        }
+        Smallimg[2].onclick = function () {
+            ProductImg.src = Smallimg[2].src;
+        }
+        Smallimg[3].onclick = function () {
+            ProductImg.src = Smallimg[3].src;
+        }
+
+    </script>
+</body>
+
+</html>
