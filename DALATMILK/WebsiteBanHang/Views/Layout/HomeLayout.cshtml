@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+    <link href="~/Content/fontawesome/css/all.css" rel="stylesheet" type="text/css" media="all">
+    <link href="~/Content/fontawesome/css/all.min.css" rel="stylesheet" type="text/css" media="all">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="~/Content/js/jquery.min.js"></script>
+    <!-- Custom Theme files -->
+    <!--theme-style-->
+    <link href="~/Content/css/Home_style.css" rel="stylesheet" type="text/css" media="all">
+    <!--//theme-style-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="keywords" content="New Store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design">
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!--fonts-->
+    <link href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet" type="text/css"><!--//fonts-->
+    <!-- start menu -->
+    <link href="~/Content/css/memenu.css" rel="stylesheet" type="text/css" media="all">
+    <script type="text/javascript" src="~/Content/js/memenu.js"></script>
+    <script>$(document).ready(function () { $(".memenu").memenu(); });</script>
+    <script src="~/Content/js/simpleCart.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+</head>
+<body>
+    <!--header-->
+    <div class="header" >
+        @Html.Partial("~/Views/Layout//HeaderTopPartial.cshtml")
+        <div class="container">
+            <div class="head-top">
+                <div class="logo">
+                    <a href="#"><img src="images/logo.png" alt=""></a>
+                </div>
+                @Html.Action("MenuPartial", "Home")
+
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="banner" >
+        <div class="container" >
+            <script src="~/Content/js/responsiveslides.min.js"></script>
+            <script>
+                $(function () {
+                    $("#slider").responsiveSlides({
+                        auto: true,
+                        nav: true,
+                        speed: 500,
+                        namespace: "callbacks",
+                        pager: true,
+                    });
+                });
+            </script>
+            <div id="top" class="callbacks_container" >
+                <ul class="rslides callbacks callbacks1" id="slider">
+                    <li id="callbacks1_s0" class="" style="display: block; float: none; position: absolute; opacity: 0; z-index: 1; transition: opacity 500ms ease-in-out 0s;">
+
+                        <div class="banner-text">
+                            <h3>Sữa Tươi Tiệt Trùng Dalatmilk </h3>
+                            <p>Sữa tươi tiệt trùng Dalatmilk 220ml là dòng sản phẩm mới nhất được chế biến từ 100% sữa tươi chất lượng cao. Được vắt từ những giống bò sữa tốt nhất.</p>
+                            <a href="@Url.Action("SanPham","SanPham",new {@MaLoaiSP = 1, @MaNSX = 4})">Xem thêm</a>
+                        </div>
+
+                    </li>
+                    <li id="callbacks1_s1" class="callbacks1_on" style="float: left; position: relative; opacity: 1; z-index: 2; display: list-item; transition: opacity 500ms ease-in-out 0s;">
+
+                        <div class="banner-text">
+                            <h3>Sữa Tươi Tiệt Trùng Dalatmilk </h3>
+                            <p>có thể bảo quản ở nhiệt độ phòng với hạn sử dụng lên đến 6 tháng.</p>
+                            <a href="@Url.Action("SanPham","SanPham",new {@MaLoaiSP = 1, @MaNSX = 4})">Xem thêm</a>
+                        </div>
+                    </li>
+                    <li id="callbacks1_s2" class="" style="float: none; position: absolute; opacity: 0; z-index: 1; display: list-item; transition: opacity 500ms ease-in-out 0s;">
+                        <div class="banner-text">
+                            <h3>GSữa Chua Uống – Có Đường 500ml</h3>
+                            <p>Là dòng sản phẩm. lên men sống với chủng men L. Bulgaricusy</p>
+                            <a href="@Url.Action("SanPham","SanPham",new {@MaLoaiSP = 1, @MaNSX = 4})">Xem thêm</a>
+                        </div>
+                    </li>
+                </ul>
+                <a href="#" class="callbacks_nav callbacks1_nav prev">Previous</a><a href="#" class="callbacks_nav callbacks1_nav next">Next</a><ul class="callbacks_tabs callbacks1_tabs"><li class="callbacks1_s1"><a href="#" class="callbacks1_s1">1</a></li><li class="callbacks1_s2 callbacks_here"><a href="#" class="callbacks1_s2">2</a></li><li class="callbacks1_s3"><a href="#" class="callbacks1_s3">3</a></li></ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!--content-->
+    <div class="content">
+        @RenderBody()
+
+    </div>
+    <!-- #region Phần footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="footer-top-at">
+
+                <div class="col-md-4 amet-sed">
+                    <h4>Thông Tin Chung</h4>
+                    <ul class="nav-bottom">
+                        <li><a href="#">Giới Thiệu</a></li>
+                        <li><a href="#">Tin Tuyển Dụng</a></li>
+                        <li><a href="contact.html">Tin Tức</a></li>
+                        <li><a href="#">Tin Khuyến Mãi</a></li>
+                        <li><a href="#">Chính Sách Bảo Hành</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 amet-sed ">
+                    <h4>HỖ TRỢ KHÁCH HÀNG</h4>
+                    <p>Mua Giá Sỉ Và Lẻ</p>
+                    <p>Vận chuyể toàn quốc</p>
+                    <p>Chính Sách Đổi Hàng</p>
+                    <ul class="social">
+                        <li><a href="#"><i> </i></a></li>
+                        <li><a href="#"><i class="twitter"> </i></a></li>
+                        <li><a href="#"><i class="rss"> </i></a></li>
+                        <li><a href="#"><i class="gmail"> </i></a></li>
+
+                    </ul>
+                </div>
+                <div class="col-md-4 amet-sed">
+                    <h4>Nhận Thông Tin Khuyến Mãi</h4>
+                    <p>
+                        Nhập Địa Chỉ Email Để Nhận Thông Báo Mới Nhất
+                    </p>
+                    <form>
+                        <input type="text" placeholder="Email@gmail.com" value="" onfocus="this.value='';" onblur="if (this.value == '') {this.value ='';}">
+                        <input type="submit" value="Gửi">
+                    </form>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+    <!-- #endregion -->
+</body>
+</html>
