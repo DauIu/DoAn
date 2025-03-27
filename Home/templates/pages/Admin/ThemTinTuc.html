@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Tin Tức</title>
+    {% load static %}
+    
+    <!-- Bootstrap CSS with updated integrity hash -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" 
+          crossorigin="anonymous">
+    
+    <style>
+        body { background-color: #f8f9fa; }
+        .form-container {
+            max-width: 850px; margin: 60px auto; background-color: #fff; padding: 40px; border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h2 { text-align: center; color: #17a2b8; font-weight: bold; margin-bottom: 40px; }
+        .form-label { font-weight: 600; color: #495057; }
+        .form-control { border-radius: 6px; padding: 12px; border: 1px solid #ced4da; transition: all 0.3s ease; }
+        .form-control:focus { border-color: #17a2b8; box-shadow: none; }
+        .form-actions { display: flex; justify-content: space-between; margin-top: 30px; }
+        .btn { padding: 10px 20px; font-size: 1.1rem; }
+        .btn-success { background-color: #28a745; }
+        .btn-secondary { background-color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2 class="text-success">Thêm Tin Tức Mới</h2>
+
+            <!-- Form Thêm Tin Tức -->
+            <form method="POST" enctype="multipart/form-data" id="newsForm">
+                {% csrf_token %}
+
+                <!-- Tiêu đề tin tức -->
+                <div class="mb-4">
+                    <label for="TieuDe" class="form-label">Tiêu Đề Tin Tức</label>
+                    <input type="text" class="form-control" id="TieuDe" name="TieuDe" placeholder="Nhập tiêu đề tin tức..." required>
+                </div>
+                
+                <!-- Ảnh đại diện -->
+                <div class="mb-4">
+                    <label for="AnhDaiDien" class="form-label">Ảnh Đại Diện</label>
+                    <input type="file" class="form-control" id="AnhDaiDien" name="AnhDaiDien" accept="image/*">
+                </div>
+                
+                <!-- Nội dung CKEditor -->
+                <div class="mb-4">
+                    <label for="NoiDung" class="form-label">Nội Dung</label>
+                    <textarea class="form-control" id="NoiDung" name="NoiDung" rows="6" placeholder="Nhập nội dung bài viết..."></textarea>
+                </div>
+
+                <!-- Tác giả -->
+                {% comment %} <div class="mb-4">
+                    <label for="TacGia" class="form-label">Tác Giả</label>
+                    <input type="text" class="form-control" id="TacGia" name="TacGia" placeholder="Nhập tên tác giả..." required>
+                </div> {% endcomment %}
+
+                <!-- Nút Thêm Mới -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Thêm Mới</button>
+                    <a href="{% url 'UserMember:QLTinTuc' %}" class="btn btn-secondary">Quay Lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- jQuery, Bootstrap, CKEditor, and CKFinder Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
+            crossorigin="anonymous"></script>
+
+    <!-- CKFinder script (ensure correct path) -->
+
+    <!-- CKEditor Initialization and Form Validation -->
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        const csrfToken = getCookie('csrftoken');
+        
+        // Khởi tạo CKEditor với CSRF token trong headers
+        ClassicEditor
+            .create(document.querySelector('#NoiDung'), {
+                ckfinder: {
+                    uploadUrl: '/upload/',  // URL phải trùng với URL của view xử lý upload
+                    headers: {
+                        'X-CSRFToken': csrfToken  // Đính kèm CSRF token vào headers
+                    }
+                },
+                toolbar: [
+                    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload'
+                ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+</body>
+</html>

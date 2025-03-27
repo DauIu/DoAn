@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %}Thống Kê{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+        .chart-navigation {
+            margin-top: 10px; /* Giảm khoảng cách giữa biểu đồ và nút */
+        }
+    </style>
+
+</head>
+<body>
+    {% block content %}
+    <div class="container-fluid mb-3">
+        <div class="row">
+            <div class="col-3"><h2>Thống kê theo: </h2></div>
+            <div class="col-9 d-flex justify-content-end">
+                <ul class="nav nav-pills mb-3" role="tablist">
+                    <li class="nav-item">
+                        <a class="btn btn-outline-success border-2 active" id="doanh-thu-tab" data-bs-toggle="tab" href="#doanh-thu" role="tab">Doanh Thu</a>&nbsp;|&nbsp;
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-success border-2" id="voucher-tab" data-bs-toggle="tab" href="#voucher" role="tab">Voucher</a>&nbsp;|&nbsp;
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-success border-2" id="san-pham-tab" data-bs-toggle="tab" href="#san-pham" role="tab">Sản Phẩm</a>&nbsp;|&nbsp;
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-success border-2" id="kho-tab" data-bs-toggle="tab" href="#kho" role="tab">Kho</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nội dung từng loại thống kê -->
+    <div class="tab-content">
+        <!-- Thống kê Doanh Thu -->
+        <div class="tab-pane fade show active" id="doanh-thu" role="tabpanel" aria-labelledby="doanh-thu-tab">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-8">
+                <div class="section-header text-start mb-3 " style="max-width: 800px;">
+                    <h3 class="mb-3" style="font-weight:300;">Tổng doanh thu trong ngày hôm nay: <strong class="text-ombre">{{ doanh_thu_ngay|default:"0" }} VND</strong></h3>
+                </div>
+            </div>
+            <form method="get" class="mb-3">
+                {% if errors %}
+                <div class="alert alert-danger" role="alert">
+                    <ul>
+                        {% for error in errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-md-5">
+                        <label for="start_date">Ngày bắt đầu:</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ start_date }}" max="{{ today }}">
+                    </div>
+                    <div class="col-md-5">
+                        <label for="end_date">Ngày kết thúc:</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ end_date }}" max="{{ today }}">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-success w-100">Lọc</button>
+                    </div>
+                </div>
+            </form>
+            <div>
+                <h3 class="mb-3" style="font-weight:300;">
+                    Doanh thu trong khoảng thời gian:
+                    <strong class="text-ombre">
+                        {% if doanh_thu_khoang_thoi_gian %}
+                        {{ doanh_thu_khoang_thoi_gian }} VND
+                        {% else %}
+                        Không có doanh thu trong khoảng thời gian này.
+                        {% endif %}
+                    </strong>
+                </h3>
+            </div>
+            <div class="btn-group mb-4">
+                <button class="btn" style="background-color: #e5844f" onclick="loadChartData('day')">Thống kê theo Ngày</button>
+                <button class="btn" style="background-color: #bd8c4d" onclick="loadChartData('week')">Thống kê theo Tuần</button>
+                <button class="btn" style="background-color: #84964a" onclick="loadChartData('month')">Thống kê theo Tháng</button>
+                <button class="btn" style="background-color: #3c9945" onclick="loadChartData('year')">Thống kê theo Năm</button>
+            </div>
+            <div class="mt-4">
+                <canvas id="thongKeChart" width="400" height="200"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-navigation text-center mt-2">
+                    <button class="btn btn-secondary mx-2" onclick="navigateChart('prev')">←</button>
+                    <button class="btn btn-secondary mx-2" onclick="navigateChart('next')"> →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thống kê Voucher -->
+        <div class="tab-pane fade" id="voucher" role="tabpanel" aria-labelledby="voucher-tab">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-8">
+                <div class="section-header text-start mb-3" style="max-width: 800px;">
+                    <h3 class="mb-3" style="font-weight:300;">
+                        Tổng số voucher còn khả dụng:
+                        <strong class="text-ombre"> {{ tong_so_voucher }} vouchers</strong>
+                    </h3>
+                    <h3 class="mb-3" style="font-weight:300;">
+                        Tổng giá trị giảm giá đã áp dụng:
+                        <strong class="text-ombre">{{ tong_voucher_ap_dung }} VND</strong>
+                    </h3>
+                </div>
+            </div>
+            <div class="btn-group mb-4">
+                <button class="btn" style="background-color: #e5844f" onclick="loadVoucherChart('day')">Thống kê theo Ngày</button>
+                <button class="btn" style="background-color: #bd8c4d" onclick="loadVoucherChart('week')">Thống kê theo Tuần</button>
+                <button class="btn" style="background-color: #84964a" onclick="loadVoucherChart('month')">Thống kê theo Tháng</button>
+                <button class="btn" style="background-color: #3c9945" onclick="loadVoucherChart('year')">Thống kê theo Năm</button>
+            </div>
+            <div class="mt-4">
+                <canvas id="voucherChart" width="400" height="200"></canvas>
+            </div>
+            <div class="chart-container">
+                <div class="chart-navigation text-center mt-2">
+                    <button class="btn btn-secondary mx-2" onclick="navigateChart('prev')">← </button>
+                    <button class="btn btn-secondary mx-2" onclick="navigateChart('next')"> →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thống kê Sản Phẩm -->
+        <div class="tab-pane fade" id="san-pham" role="tabpanel" aria-labelledby="san-pham-tab">
+            <div class="section-header text-start mb-3" style="max-width: 800px;">
+                <!-- Tổng số lượng sản phẩm đã bán -->
+                <h3 class="mb-3" style="font-weight:300;">
+                    Tổng số lượng sản phẩm đã bán:
+                    <strong class="text-ombre">{{ tong_so_luong_da_ban }} sản phẩm</strong>
+                </h3>
+
+                <!-- Top sản phẩm bán chạy -->
+                <h3 class="mb-3" style="font-weight:300;">Top sản phẩm bán chạy:</h3>
+                <ul>
+                    {% for sp in top_san_pham %}
+                    <li>
+                        <strong class="text-ombre">Top {{ forloop.counter }}: </strong>{{ sp.MaSP__TenSP }}
+                        ({{ sp.tong_ban }} sản phẩm)
+                    </li>
+                    {% empty %}
+                    <li>Không có sản phẩm bán chạy.</li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Số lượng sản phẩm đã bán theo loại -->
+                <h3 class="mb-3" style="font-weight:300;">
+                    Số lượng sản phẩm đã bán theo loại:
+                </h3>
+                <ul>
+                    {% for loai in loai_san_pham_ban %}
+                    <li>
+                        <strong class="text-ombre">{{ loai.MaSP__MaLoai__TenLoai }}</strong>:
+                        {{ loai.tong_ban|default:"0" }} sản phẩm
+                    </li>
+                    {% empty %}
+                    <li>Không có sản phẩm nào được bán.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Phần biểu đồ -->
+            <div>
+                <div class="btn-group mb-4">
+                    <button class="btn" style="background-color: #e5844f" onclick="loadSanPhamChart('day')">Thống kê theo Ngày</button>
+                    <button class="btn" style="background-color: #bd8c4d" onclick="loadSanPhamChart('week')">Thống kê theo Tuần</button>
+                    <button class="btn" style="background-color: #84964a" onclick="loadSanPhamChart('month')">Thống kê theo Tháng</button>
+                    <button class="btn" style="background-color: #3c9945" onclick="loadSanPhamChart('year')">Thống kê theo Năm</button>
+                </div>
+                <div class="mt-4">
+                    <canvas id="sanPhamChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-navigation text-center mt-2">
+                    <button class="btn btn-secondary mx-2" onclick="navigateChart('prev')">← </button>
+                    <button class="btn btn-secondary mx-2" onclick="navigateChart('next')"> →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thống kê Kho -->
+        <div class="tab-pane fade" id="kho" role="tabpanel" aria-labelledby="kho-tab">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-8">
+                    <div class="section-header text-start mb-3 " style="max-width: 800px;">
+                        <h3 class="mb-3" style="font-weight:300;">Tổng số lượng tồn kho: <strong class="text-ombre">  {{ tong_so_luong_ton_kho }} sản phẩm</strong></h3>
+                        <h3 class="mb-3" style="font-weight:300;">Giá trị tồn kho: <strong class="text-ombre">{{ tong_gia_tri_ton_kho }} VNĐ</strong></h3>
+                    </div>
+                </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="bg-white sort-cate clearfix">
+                        <div class="section-header text-center mb-5 wow fadeInUp">
+                            <form method="GET" action="">
+                                <div class="input-group mb-3">
+                                    <input type="text" name="q" class="form-control" placeholder="Nhập tên sản phẩm..." value="{{ keyword|default:'' }}">
+                                    <button class="btn btn-success" type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <table border="1" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tên Sản Phẩm</th>
+                        {% for warehouse in warehouses %}
+                        <th>{{ warehouse }}</th>
+                        {% endfor %}
+                        <th>Tổng Số Lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in table_data %}
+                    <tr>
+                        <td>{{ row.TenSP }}</td>
+                        {% for warehouse in row.Warehouses %}
+                        <td>{{ warehouse.SoLuong }}</td>
+                        {% endfor %}
+                        <td>{{ row.TongSoLuong }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-8">
+                <div class="section-header text-start mb-3 " style="max-width: 800px;">
+                    <h3 class="mb-3" style="font-weight:300;">Sản phẩm tồn kho lâu ngày:</h3>
+                </div>
+                <ul>
+                    {% for sp in san_pham_ton_lau %}
+                    <li>{{ sp.SanPham.TenSP }} (Nhập kho: {{ sp.NgayNhapKho }})</li>
+                    {% empty %}
+                    <li>Không có sản phẩm nào tồn kho lâu ngày.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Xử lý Biểu đồ -->
+
+    <script>
+        let thongKeChart = null;
+        let voucherChart = null;
+        let sanPhamChart = null;
+        let currentDate = new Date();
+        let currentType = 'day';
+
+        function loadChart(type, newDate = null, chartId, datasetLabel, fetchUrl, gradientColors) {
+            currentType = type;
+            if (newDate) {
+                currentDate = newDate;
+            }
+
+            const formattedDate = currentDate.toISOString().split('T')[0];
+            const url = `${fetchUrl}?type=${type}&current_date=${formattedDate}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const { labels = [], values = [] } = data;
+
+                    if (!labels.length || !values.length) {
+                        alert('Không có dữ liệu để hiển thị!');
+                        return;
+                    }
+
+                    const ctx = document.getElementById(chartId).getContext('2d');
+                    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                    gradient.addColorStop(0, gradientColors[0]);
+                    gradient.addColorStop(1, gradientColors[1]);
+
+                    // Destroy previous chart instance if it exists
+                    if (window[chartId] instanceof Chart) {
+                        window[chartId].destroy();
+                    }
+
+                    // Create new chart instance
+                    window[chartId] = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: datasetLabel,
+                                data: values,
+                                backgroundColor: gradient,
+                                borderColor: gradientColors[0],
+                                borderWidth: 1,
+                                maxBarThickness: 50,
+                                barPercentage: 0.9
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: tooltipItem => {
+                                            const originalValue = values[tooltipItem.dataIndex];
+                                            return originalValue.toLocaleString('vi-VN') + ' ' + datasetLabel.split(' ')[1];
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    ticks: { color: '#333', maxRotation: 45, minRotation: 0 }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    grid: { color: 'rgba(200, 200, 200, 0.3)' },
+                                    ticks: {
+                                        callback: value => value.toLocaleString('vi-VN') + ' ' + datasetLabel.split(' ')[1],
+                                        color: '#333'
+                                    },
+                                    suggestedMax: Math.max(...values) * 1.2
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải dữ liệu:', error);
+                    alert('Đã xảy ra lỗi khi tải dữ liệu.');
+                });
+        }
+
+        function loadChartData(type, newDate = null) {
+            loadChart(type, newDate, 'thongKeChart', ' VND - Doanh thu', '/api/thong-ke-bieu-do/', ['rgba(255, 165, 0, 0.9)', 'rgba(153, 102, 255, 0.5)']);
+        }
+
+        function loadVoucherChart(type, newDate = null) {
+            loadChart(type, newDate, 'voucherChart', ' VND - Số tiền giảm', '/api/thong-ke-voucher-bieu-do/', ['rgba(255, 165, 0, 0.9)', 'rgba(153, 102, 255, 0.5)']);
+        }
+
+        function loadSanPhamChart(type, newDate = null) {
+            loadChart(type, newDate, 'sanPhamChart', ' (sp) - Số lượng sản phẩm đã bán', '/api/thong-ke-san-pham-bieu-do/', ['rgba(255, 165, 0, 0.9)', 'rgba(153, 102, 255, 0.5)']);
+        }
+
+        // Điều hướng biểu đồ (tiến/lùi)
+        function navigateChart(direction) {
+            let increment;
+            switch (currentType) {
+                case 'day':
+                    increment = direction === 'prev' ? -1 : 1;
+                    currentDate.setDate(currentDate.getDate() + increment);
+                    break;
+
+                case 'week':
+                    increment = direction === 'prev' ? -7 : 7;
+                    currentDate.setDate(currentDate.getDate() + increment);
+                    break;
+
+                case 'month':
+                    increment = direction === 'prev' ? -1 : 1;
+                    currentDate.setFullYear(currentDate.getFullYear() + increment);
+                    break;
+
+                case 'year':
+                    increment = direction === 'prev' ? -1 : 1;
+                    currentDate.setFullYear(currentDate.getFullYear() + increment);
+                    break;
+
+                default:
+                    console.error('Invalid chart type');
+                    return;
+            }
+
+            const activeTab = document.querySelector('.tab-pane.active').id;
+            if (activeTab === 'doanh-thu') {
+                loadChartData(currentType, currentDate);
+            } else if (activeTab === 'voucher') {
+                loadVoucherChart(currentType, currentDate);
+            } else if (activeTab === 'san-pham') {
+                loadSanPhamChart(currentType, currentDate);
+            }
+        }
+
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', () => {
+            loadChartData('day');
+            const voucherTab = document.getElementById('voucher-tab');
+            voucherTab.addEventListener('shown.bs.tab', () => {
+                loadVoucherChart('day');
+            });
+            const sanPhamTab = document.getElementById('san-pham-tab');
+            sanPhamTab.addEventListener('shown.bs.tab', () => {
+                loadSanPhamChart('day');
+            });
+        });
+
+
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const startDateInput = document.getElementById('start_date');
+            const endDateInput = document.getElementById('end_date');
+            const today = new Date().toISOString().split('T')[0]; // Lấy ngày hiện tại (YYYY-MM-DD)
+            // Đặt giá trị `max` cho cả 2 trường để không chọn ngày lớn hơn hôm nay
+            startDateInput.setAttribute('max', today);
+            endDateInput.setAttribute('max', today);
+            // Khi người dùng chọn ngày bắt đầu
+            startDateInput.addEventListener('change', () => {
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+
+                // Ngày bắt đầu không được lớn hơn ngày kết thúc
+                if (startDate && endDate && startDate > endDate) {
+                    alert("Ngày bắt đầu không được lớn hơn ngày kết thúc.");
+                    startDateInput.value = ""; // Xóa giá trị không hợp lệ
+                }
+            });
+
+            // Khi người dùng chọn ngày kết thúc
+            endDateInput.addEventListener('change', () => {
+                const startDate = startDateInput.value;
+                const endDate = endDateInput.value;
+
+                // Ngày kết thúc không được nhỏ hơn ngày bắt đầu
+                if (startDate && endDate && endDate < startDate) {
+                    alert("Ngày kết thúc không được nhỏ hơn ngày bắt đầu.");
+                    endDateInput.value = ""; // Xóa giá trị không hợp lệ
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% endblock %}
+</body>
+</html>

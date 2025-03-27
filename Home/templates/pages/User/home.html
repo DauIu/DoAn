@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% extends "layout/layout.html" %}
+    <meta charset="utf-8" />
+
+    <title>{% block title %} Trang chủ {% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+    {% load static %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header-home mb-2 wow fadeIn" data-wow-delay="0.1s"> </div>
+
+    <!-- Giới thiệu Start -->
+    <div class="container-xxl py-3">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="about-img position-relative overflow-hidden p-5 pe-0">
+                        <img class="img-fluid w-100 h-100" src="{% static 'image/about.jpg' %}">
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <h1 class="display-5 mb-4">Trái cây hữu cơ tốt nhất</h1>
+                    <p class="mb-4">
+                        Fresh Fruit là đơn vị uy tín chuyên cung cấp hoa quả, trái cây nhập khẩu từ Mỹ, Úc, Canada, New Zealand, Chilê,
+                        Nam Phi, Nhật Bản, Hàn Quốc, Đời Loan v..v. với chất lượng và giá cả hợp lý. Các loại trái cây được nhập về đều có
+                        chứng từ nhập khẩu chính ngạch và kiểm dịch thực vật đầy đủ.
+                    </p>
+                    <p><i class="fa fa-check text-success me-3"></i>Nguồn gốc xuất xứ rõ ràng</p>
+                    <p><i class="fa fa-check text-success me-3"></i>Chất lượng tương xứng giá cả</p>
+                    <p><i class="fa fa-check text-success me-3"></i>Tư vấn mua hàng 24/7</p>
+                    <p><i class="fa fa-check text-success me-3"></i>Giao hàng tận nơi và nhanh chóng</p>
+                    <a class="btn btn-success rounded-pill py-3 px-5 mt-3" href="{% url 'UserMember:GioiThieu' %}">Xem chi tiêt</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Về chúng tôi Start -->
+    <div class="container-fluid bg-light bg-icon my-5 py-5">
+        <div class="container">
+            <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 700px;">
+                <h1 class="display-5 mb-3">Về chúng tôi</h1>
+                <p>
+                    Chúng tôi hiện có thể cung cấp thực phẩm tươi sạch với số lượng lớn nhờ vào vụ mùa thu hoạch,
+                    đáp ứng nhu cầu của các đối tác xuất khẩu nông sản trên toàn quốc.
+                </p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="bg-white text-center h-100 p-4 p-xl-5">
+                        <img class="img-fluid mb-4" src="{% static 'image/icon-1.png' %}" alt="">
+                        <h4 class="mb-3">Quá trình tự nhiên</h4>
+                        <p class="mb-4">
+                            Chúng tôi cam kết cung cấp 100% sản phẩm rõ nguồn gốc, sạch, an toàn và chất lượng, nhằm hỗ trợ người tiêu dùng.
+                        </p>
+                        <a class="btn btn-outline-success border-2 py-2 px-4 rounded-pill" href="{% url 'UserMember:GioiThieu' %}">Xem chi tiêt</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="bg-white text-center h-100 p-4 p-xl-5">
+                        <img class="img-fluid mb-4" src="{% static 'image/icon-2.png' %}" alt="">
+                        <h4 class="mb-3">Sản phẩm hữu cơ</h4>
+                        <p class="mb-4">
+                            Chúng tôi cam kết cung cấp 100% sản phẩm rõ nguồn gốc, sạch, an toàn và chất lượng, nhằm hỗ trợ người tiêu dùng.
+                        </p>
+                        <a class="btn btn-outline-success border-2 py-2 px-4 rounded-pill" href="{% url 'UserMember:GioiThieu' %}">Xem chi tiêt</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="bg-white text-center h-100 p-4 p-xl-5">
+                        <img class="img-fluid mb-4" src="{% static 'image/icon-3.png' %}" alt="">
+                        <h4 class="mb-3">An toàn thực phẩm</h4>
+                        <p class="mb-4">
+                            Chúng tôi cam kết cung cấp 100% sản phẩm rõ nguồn gốc, sạch, an toàn và chất lượng, nhằm hỗ trợ người tiêu dùng.
+                        </p>
+                        <a class="btn btn-outline-success border-2 py-2 px-4 rounded-pill" href="{% url 'UserMember:GioiThieu' %}">Xem chi tiêt</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Start -->
+    <div class="container-xxl py-3">
+        <div class="container">
+            <div class="row g-0 gx-5 align-items-end">
+                <div class="col-lg-6">
+                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                        <h1 class="display-5 mb-3">Danh mục sản phẩm</h1>
+                        <p>Chúng tôi cam kết cung cấp 100% sản phẩm rõ nguồn gốc, sạch, an toàn và chất lượng, nhằm hỗ trợ người tiêu dùng.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+                    <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-success border-2 active" data-bs-toggle="pill" href="#tab-1">Nhập khẩu</a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-success border-2" data-bs-toggle="pill" href="#tab-2">Nội địa</a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-success border-2" data-bs-toggle="pill" href="#tab-3">Giỏ trái cây</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                <!--Load sản phẩm nhập khẩu-->
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        <!--SP01-->
+                        {% for product in sanphams_nhapkhau %}
+                        <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="product-item">
+                                <div class="position-relative overflow-hidden">
+                                    <img class="img-fluid d-block mx-auto" style="width:250px; height:250px" src="{% static 'products/' %}{{ product.HinhAnh }}" alt="">
+                                </div>
+                                <div class="text-center p-4">
+                                    <a class="d-block h5 mb-2 text-decoration-none" href="{% url 'UserMember:chiTietSP' product_id=product.MaSP %}">{{ product.TenSP }}</a>
+                                    <span class="text-success me-1">{{ product.GiaBan|floatformat:3  }} VNĐ</span>
+                                </div>
+                                <div class="d-flex border-top">
+                                    <small class="w-50 text-center border-end py-2">
+                                        <a class="btn btn-outline-light text-body text-decoration-none" href="{% url 'UserMember:chiTietSP' product_id=product.MaSP %}"><i class="fa fa-eye text-success me-2"></i>Xem chi tiết</a>
+                                    </small>
+                                    <small class="w-50 text-center py-2">
+                                        <button type="button" 
+                                                onclick="addToCart(event, '{{ product.MaSP }}')" 
+                                                class="text-body text-decoration-none btn btn-outline-light btn-add-to-cart"
+                                                {% if product.SoLuongHienTai <= 0 %}disabled{% endif %}>
+                                            <i class="fa fa-shopping-bag text-success me-2"></i>Thêm vào giỏ
+                                        </button>
+
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
+                            <a class="btn rounded-pill py-3 px-5" style="background-color:orange" href="{% url 'UserMember:DSSanPham' %}">Xem thêm</a>
+                        </div>
+                    </div>
+                </div>
+                <!--Load sản phẩm trong nước-->
+                <div id="tab-2" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        {% for product in sanphams_viet %}
+                        <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="product-item">
+                                <div class="position-relative overflow-hidden">
+                                    <img class="img-fluid d-block mx-auto" style="width:250px; height:250px" src="{% static 'products/' %}{{ product.HinhAnh }}" alt="">
+                                </div>
+                                <div class="text-center p-4">
+                                    <a class="d-block h5 mb-2 text-decoration-none" href="{% url 'UserMember:chiTietSP' product_id=product.MaSP %}">{{ product.TenSP }}</a>
+                                    <span class="text-success me-1">{{ product.GiaBan|floatformat:3  }} VNĐ</span>
+                                </div>
+                                <div class="d-flex border-top">
+                                    <small class="w-50 text-center border-end py-2">
+                                        <a class="btn btn-outline-light text-body text-decoration-none" href="{% url 'UserMember:chiTietSP' product_id=product.MaSP %}"><i class="fa fa-eye text-success me-2"></i>Xem chi tiết</a>
+                                    </small>
+                                    <small class="w-50 text-center py-2">
+                                        <button type="button" 
+                                                onclick="addToCart(event, '{{ product.MaSP }}')" 
+                                                class="text-body text-decoration-none btn btn-outline-light btn-add-to-cart"
+                                                {% if product.SoLuongHienTai <= 0 %}disabled{% endif %}>
+                                            <i class="fa fa-shopping-bag text-success me-2"></i>Thêm vào giỏ
+                                        </button>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="col-12 text-center">
+                            <a class="btn rounded-pill py-3 px-5" style="background-color:orange" href="{% url 'UserMember:DSSanPham' %}">Xem thêm</a>
+                        </div>
+                    </div>
+                </div>
+                <!--Load giỏ trái cây-->
+                <div id="tab-3" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        {% for product in sanphams_giotraicay %}
+                        <div class="col-xl-4 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="product-item">
+                                <div class="position-relative overflow-hidden">
+                                    <img class="img-fluid d-block mx-auto" style="width:250px; height:250px" src="{% static 'products/' %}{{ product.HinhAnh }}" alt="">
+                                </div>
+                                <div class="text-center p-4">
+                                    <a class="d-block h5 mb-2 text-decoration-none" href="{% url 'UserMember:chiTietSP' product_id=product.MaSP %}">{{ product.TenSP }}</a>
+                                    <span class="text-success me-1">{{ product.GiaBan|floatformat:3  }} VNĐ</span>
+                                </div>
+                                <div class="d-flex border-top">
+                                    <small class="w-50 text-center border-end py-2">
+                                        <a class="btn btn-outline-light text-body text-decoration-none"  href="{% url 'UserMember:chiTietSP' product_id=product.MaSP %}"><i class="fa fa-eye text-success me-2"></i>Xem chi tiết</a>
+                                    </small>
+                                    <small class="w-50 text-center py-2">
+                                        <button type="button" 
+                                                onclick="addToCart(event, '{{ product.MaSP }}')" 
+                                                class="text-body text-decoration-none btn btn-outline-light btn-add-to-cart"
+                                                {% if product.SoLuongHienTai <= 0 %}disabled{% endif %}>
+                                            <i class="fa fa-shopping-bag text-success me-2"></i>Thêm vào giỏ
+                                        </button>
+
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="col-12 text-center">
+                            <a class="btn rounded-pill py-3 px-5" style="background-color:orange" href="{% url 'UserMember:DSSanPham' %}">Xem thêm</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Đánh giá Start -->
+    <div class="container-fluid bg-light bg-icon py-6 mb-5">
+        <div class="container">
+            <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <h1 class="display-5 mb-3">Khách hàng đánh giá</h1>
+                <p>Chúng tôi luôn luôn lắng nghe những đóng góp từ khách hàng.</p>
+            </div>
+            <!--Load thông tin đánh giá của khách-->
+            <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
+                <div class="testimonial-item position-relative bg-white p-5 mt-4">
+                    <i class="fa fa-quote-left fa-3x text-success position-absolute top-0 start-0 mt-n4 ms-5"></i>
+                    <p class="mb-4">Cửa hàng trái cây tươi ngon, đa dạng! Nhân viên thân thiện và tư vấn nhiệt tình. Rất hài lòng!</p>
+                    <div class="d-flex align-items-center">
+                        <img class="flex-shrink-0 rounded-circle" src="{% static 'image/user1.jpg' %}" alt="">
+                        <div class="ms-3">
+                            <h5 class="mb-1">Trannie.1217</h5>
+                            <span>Khách hàng</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item position-relative bg-white p-5 mt-4">
+                    <i class="fa fa-quote-left fa-3x text-primary position-absolute top-0 start-0 mt-n4 ms-5"></i>
+                    <p class="mb-4">Lần đầu trải nghiệm thấy trái cây ở đây rất tươi ngon, giá cả hợp lý, tôi sẽ quay lại!</p>
+                    <div class="d-flex align-items-center">
+                        <img class="flex-shrink-0 rounded-circle" src="{% static 'image/user2.jpg' %}" alt="">
+                        <div class="ms-3">
+                            <h5 class="mb-1">tins_7132</h5>
+                            <span>Khách hàng</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item position-relative bg-white p-5 mt-4">
+                    <i class="fa fa-quote-left fa-3x text-primary position-absolute top-0 start-0 mt-n4 ms-5"></i>
+                    <p class="mb-4">Thiên đường trái cây! Chất lượng tuyệt vời, nhân viên chu đáo. Rất đáng để ủng hộ!</p>
+                    <div class="d-flex align-items-center">
+                        <img class="flex-shrink-0 rounded-circle" src="{% static 'image/user3.jpg' %}" alt="">
+                        <div class="ms-3">
+                            <h5 class="mb-1">dung_ngu555</h5>
+                            <span>Khách hàng</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item position-relative bg-white p-5 mt-4">
+                    <i class="fa fa-quote-left fa-3x text-primary position-absolute top-0 start-0 mt-n4 ms-5"></i>
+                    <p class="mb-4">Cửa hàng tuyệt vời! Trái cây tươi mát, đẹp mắt. Tôi rất thích mua sắm ở đây!</p>
+                    <div class="d-flex align-items-center">
+                        <img class="flex-shrink-0 rounded-circle" src="{% static 'image/user4.jpg' %}" alt="">
+                        <div class="ms-3">
+                            <h5 class="mb-1">zii.3960</h5>
+                            <span>Khách hàng</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- tin tức Start -->
+    <div class="container-xxl py-1">
+        <div class="container">
+            <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <h1 class="display-5 mb-3">Tin tức mới nhất</h1>
+                <p>Hãy theo dõi và cập nhật những thông tin mới nhất từ chúng tôi.</p>
+            </div>
+            <!--Load tin tức-->
+            <div class="row g-4">
+                {% for tin in tin_moi %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="bg-light p-4">
+                        <div class="mb-3">
+                            {% if tin.AnhDaiDien %}
+                            <!-- Nếu có hình ảnh tải lên -->
+                            <img class="img-fluid" style="width:100%; height: 250px;" src="{{ tin.AnhDaiDien.url }}" alt="">
+                            {% else %}
+                            Không có ảnh.
+                            {% endif %}
+                        </div>
+                        <a class="d-block h5 lh-base mb-4 text-decoration-none" href="{% url 'UserMember:xem_tin_tuc' tin.MaTin %}">{{ tin.TieuDe }}</a>
+                        <div class="text-muted border-top pt-4">
+                            <small class="me-3"><i class="fa fa-user text-success me-2"></i>{{ tin.TacGia }}</small>
+                            <small class="me-3"><i class="fa fa-calendar text-success me-2"></i>{{ tin.NgayDang|date:"d/m/Y" }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function addToCart(event, productId) {
+        event.preventDefault();
+
+        fetch('/cart/add/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: new URLSearchParams({
+                'variantId': productId,
+                'quantity': 1
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`${data.product_name} đã được thêm vào giỏ hàng.`);
+            } else if (data.require_login) {
+                alert(data.message || "Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+                window.location.href = '/DangNhap/';
+            } else {
+                alert(data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+        });
+    }
+    </script>
+
+    {% endblock %}
+</body>
+</html>

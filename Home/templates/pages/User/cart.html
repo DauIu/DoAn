@@ -1,0 +1,466 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/layout.html" %}
+    <title>{% block title %} Giỏ hàng {% endblock %}</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+
+        body {
+            overflow: auto !important;
+        }
+    </style>
+</head>
+<body>
+    {% block content %}
+    {% load static %}
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container d-flex justify-content-end">
+            <span class="display-3 mb-3 animated slideInDown" style="font-weight:800; font-size:72px;"> &nbsp; Giỏ hàng &nbsp;  </span>
+        </div>
+    </div>
+
+    <section class="h-100 h-custom">
+        <div class="container-fluid py-3 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <!-- Cột giỏ hàng -->
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <div class="col-lg">
+                                            <h5>
+                                                <a href="{% url 'UserMember:DSSanPham' %}" class="text-body text-decoration-none">
+                                                    <i class="bi bi-caret-left-fill"></i>Tiếp tục mua hàng
+                                                </a>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                    <hr>
+
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <div>
+                                            <h3 class="mb-1">Giỏ hàng của bạn</h3>
+                                            <p class="mb-0">Bạn có {{ DM_GH|length }} sản phẩm trong giỏ hàng</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Load giỏ hàng -->
+                                    {% if DM_GH %}
+                                    {% for item in DM_GH %}
+                                    <div class="card mb-3" id="item-{{ item.MaSP.MaSP }}">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <div>
+                                                        <img src="{% static 'products/' %}{{ item.MaSP.HinhAnh }}" alt="{{ item.MaSP.TenSP }}"
+                                                             class="img-fluid rounded-3" style="width: 65px;">
+                                                    </div>
+                                                    <div class="ms-3">
+                                                        <a href="{% url 'UserMember:chiTietSP' product_id=item.MaSP.MaSP %}" class="text-decoration-none text-ombre" style="font-weight: 500; font-size: 22px">{{ item.MaSP.TenSP }}</a>
+                                                        <p class="small mb-0"><span id="productPrice">{{ item.MaSP.GiaBan|floatformat:3 }}</span> VNĐ / {{ item.MaSP.TrongLuong }}</p>
+                                                    </div>
+
+                                                </div>
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <div class="mx-5">
+                                                        <form method="POST" action="{% url 'UserMember:update_quantity' item.MaCTDH %}">
+                                                            {% csrf_token %}
+                                                            <div class="input-group">
+                                                                <!-- Nút giảm số lượng -->
+                                                                <button class="btn btn-link px-2 btn-minus" data-variant-id="{{ item.MaSP.MaSP }}" data-action="decrease">
+                                                                    <i class="fas fa-minus text-success"></i>
+                                                                </button>
+
+                                                                <!-- Hiển thị số lượng sản phẩm -->
+                                                                <input id="qtyItem{{ item.MaSP.MaSP }}" min="1" name="quantity" value="{{ item.SoLuong }}" type="number"
+                                                                       class="form-control form-control-sm quantity-input" style="width: 50px;" data-variant-id="{{ item.MaSP.MaSP }}" />
+
+                                                                <!-- Nút tăng số lượng -->
+                                                                <button class="btn btn-link px-2 btn-plus" data-variant-id="{{ item.MaSP.MaSP }}" data-action="increase">
+                                                                    <i class="fas fa-plus text-success"></i>
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div style="width: 150px;">
+                                                        <h5 class="mb-0" id="totalPrice">{{ item.ThanhTien|floatformat:3 }} VNĐ</h5>
+                                                    </div>
+
+                                                    <!-- Nút xóa sản phẩm -->
+                                                    <a class="text-danger"
+                                                       href="{% url 'UserMember:xoa_ctdh' item.MaCTDH %}"
+                                                       onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');"> <i class="fas fa-trash-alt"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <div class="alert alert-success text-center mt-5">
+                                        <h4>Giỏ hàng trống!</h4>
+                                        <p>Hãy tiếp tục mua sắm để thêm sản phẩm vào giỏ hàng của bạn.</p>
+                                        <a href="{% url 'UserMember:DSSanPham' %}" class="btn btn-success mt-3">Mua sắm ngay</a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Thanh toán -->
+                                <div class="col-lg-4">
+                                    <div class="card bg-ombre text-white rounded-2">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h3 class="mb-1">Thông tin thanh toán</h3>
+                                            </div>
+                                            <hr />
+                                            <p>Phương thức thanh toán</p>
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-5">
+                                                        <div class="d-flex flex-row pb-2">
+                                                            <div class="d-flex align-items-center pe-2">
+                                                                <input class="form-check-input" type="radio" name="radioNoLabel" id="radioNoLabel1v"
+                                                                       value="" aria-label="..." checked />
+                                                            </div>
+                                                            <div class="rounded border w-100 p-2">
+                                                                <p class="d-flex align-items-center mb-0">
+                                                                    <i class="bi bi-cash-stack"></i> &nbsp; Tiền mặt
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <div class="d-flex flex-row pb-2">
+                                                            <div class="d-flex align-items-center pe-2">
+                                                                <input class="form-check-input" type="radio" name="radioNoLabel" id="radioNoLabel2v"
+                                                                       value="" aria-label="..." />
+                                                            </div>
+                                                            <div class="rounded border w-100 p-2">
+                                                                <p class="d-flex align-items-center text-center mb-0">
+                                                                    <i class="bi bi-credit-card"></i> &nbsp; Chuyển khoản
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="qrCode" class="bg-white mb-3" style="display: none; margin-top: 20px;">
+                                                    <h5 class="text-dark text-center">Thanh toán chuyển khoản tại đây</h5>
+                                                    <img style="width:250px" class="d-block mx-auto" src="{% static 'image/qr.jpg' %}" alt="QR Code" />
+                                                </div>
+                                            </form>
+                                            <hr />
+
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-2">Tổng tiền hàng</p>
+                                                <p class="mb-2" id="cart-total">{{ TongTien|floatformat:3 }}</p>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-2">Phí vận chuyển</p>
+                                                <p class="mb-2" id="shipping-fee">--</p>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-2">Áp mã Voucher</p>
+                                                <p class="mb-2" id="voucher-total">{{ Voucher|floatformat:3 }}</p>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <h5 class="mb-2">Tổng thanh toán</h5>
+                                                <h5 class="mb-2" id="final-total">{{ TotalPayment|floatformat:3 }}</h5>
+                                            </div>
+                                            
+                                           
+                                            <form class="mt-2" id="order-form" method="POST" action="{% url 'UserMember:confirm_order' %}">
+                                                {% csrf_token %}
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="voucher" placeholder="Nhập mã Voucher tại đây" name="voucher_code">
+                                                    <button class="btn btn-dark" type="button" id="apply-voucher-btn" onclick="applyVoucher()">Áp dụng</button>
+                                                </div>
+                                                <hr />
+                                                <div class="mb-3">
+                                                    <input type="checkbox" id="forOthers" class="form-check-input" name="forOthers" onclick="toggleUserInfo()">
+                                                    <label for="forOthers" class="form-check-label">Đặt thông tin khác</label>
+                                                </div>
+                                                <!-- Hiển thị thông tin mặc định -->
+                                                <div id="defaultInfo">
+                                                    <p><strong>Họ và Tên:</strong> <span id="current_name">{{ user_name }}</span></p>
+                                                    <p><strong>Số điện thoại:</strong> <span id="current_phone">{{ user_phone }}</span></p>
+                                                    <p><strong>Địa chỉ:</strong> <span id="current_address">{{ user_address }}</span></p>
+
+                                                    <input type="hidden" name="user_name" value="{{ user_name }}">
+                                                    <input type="hidden" name="user_phone" value="{{ user_phone }}">
+                                                    <input type="hidden" name="user_address" value="{{ user_address }}">
+                                                </div>
+
+                                                <!-- Form nhập thông tin mới (ẩn mặc định) -->
+                                                <div id="newInfoForm" style="display: none;">
+                                                    <div class="row mb-3 mx-2">
+                                                        <label for="user_name" class="form-label">Họ và Tên:</label>
+                                                        <input class="form-control" type="text" id="user_name" name="user_name" placeholder="Nhập họ và tên">
+
+                                                        <label for="user_phone" class="form-label">Số điện thoại:</label>
+                                                        <input class="form-control" type="text" id="user_phone" name="user_phone" placeholder="Nhập số điện thoại">
+
+                                                        <label for="street" class="form-label">Địa chỉ (Đường):</label>
+                                                        <input class="form-control" type="text" id="street" name="street" placeholder="Nhập địa chỉ">
+
+                                                        <label for="city" class="form-label">Thành phố:</label>
+                                                        <select class="form-select" id="city" name="city" onchange="filterCity()">
+                                                            <option value="">Chọn Thành phố</option>
+                                                            {% for ct in city_lst %}
+                                                            <option value="{{ ct.MaTP }}">{{ ct.TenTP }}</option>
+                                                            {% endfor %}
+                                                        </select>
+
+                                                        <label for="district" class="form-label">Quận/Huyện:</label>
+                                                        <select class="form-select" id="district" name="district" onchange="filterDistrict()">
+                                                            <option value="">Chọn Quận/Huyện</option>
+                                                        </select>
+
+                                                        <label for="ward" class="form-label">Phường/Xã:</label>
+                                                        <select class="form-select" id="ward" name="ward">
+                                                            <option value="">Chọn Phường/Xã</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <hr class="my-4">
+                                                <!-- Nút đặt hàng -->
+                                                <button type="submit" class="btn btn-dark btn-block btn-lg">Đặt hàng</button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    jQuery(document).ready(function () {
+        // Handle increase and decrease quantity buttons
+        jQuery('.btn-minus, .btn-plus').on('click', function () {
+            var variantId = jQuery(this).data('variant-id');
+            var action = jQuery(this).data('action');
+            var quantityInput = jQuery('#qtyItem' + variantId);
+            var currentQuantity = parseInt(quantityInput.val());
+
+            // Adjust the quantity based on the action
+            if (action === 'decrease' && currentQuantity > 1) {
+                quantityInput.val(currentQuantity - 1);
+            } else if (action === 'increase') {
+                quantityInput.val(currentQuantity + 1);
+            }
+
+            var newQuantity = parseInt(quantityInput.val());
+            if (isNaN(newQuantity) || newQuantity < 1) {
+                alert("Invalid quantity.");
+                return;
+            }
+
+            // Send an AJAX request to update the quantity
+            var updateUrl = `/cart/update/${variantId}/`;
+            jQuery.ajax({
+                url: updateUrl,
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    quantity: newQuantity
+                },
+                success: function (response) {
+                    if (response.success) {
+                        location.reload();  
+                    } 
+                },
+                error: function () {
+                    alert("An error occurred. Please try again.");
+                }
+            });
+        });
+    });
+    </script>
+
+    <!--Thông tin thanh toán-->
+    <script>
+        // Hàm chuyển đổi giữa thông tin mặc định và thông tin mới
+        function toggleUserInfo() {
+            const isForOthers = $('#forOthers').is(':checked');
+            if (isForOthers) {
+                $('#defaultInfo').hide();
+                $('#newInfoForm').show();
+                $('#defaultInfo input').prop('disabled', true);
+                $('#newInfoForm input').prop('disabled', false);
+            } else {
+                $('#defaultInfo').show();
+                $('#newInfoForm').hide();
+                $('#defaultInfo input').prop('disabled', false);
+                $('#newInfoForm input').prop('disabled', true);
+            }
+        }
+
+        // Lọc quận/huyện theo thành phố
+        function filterCity() {
+            const cityId = $('#city').val();
+            if (!cityId) {
+                $('#district').html('<option value="">Chọn Quận/Huyện</option>');
+                $('#ward').html('<option value="">Chọn Phường/Xã</option>');
+                return;
+            }
+            fetch(`/get_quan_by_thanh_pho/${cityId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    let options = '<option value="">Chọn Quận/Huyện</option>';
+                    data.districts.forEach(district => {
+                        options += `<option value="${district.id}">${district.name}</option>`;
+                    });
+                    $('#district').html(options);
+                    $('#ward').html('<option value="">Chọn Phường/Xã</option>');
+                });
+        }
+
+        // Lọc phường/xã theo quận/huyện
+        function filterDistrict() {
+            const districtId = $('#district').val();
+            if (!districtId) {
+                $('#ward').html('<option value="">Chọn Phường/Xã</option>');
+                return;
+            }
+            fetch(`/get_phuong_by_quan/${districtId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    let options = '<option value="">Chọn Phường/Xã</option>';
+                    data.wards.forEach(ward => {
+                        options += `<option value="${ward.id}">${ward.name}</option>`;
+                    });
+                    $('#ward').html(options);
+                });
+        }
+
+        // Xử lý sự kiện đặt hàng
+        $('#orderButton').on('click', function () {
+            const isForOthers = $('#forOthers').is(':checked');
+            let formData;
+
+            if (isForOthers) {
+                // Lấy thông tin từ form nhập mới
+                const street = $('#street').val().trim();
+                const ward = $('#ward option:selected').text().trim();
+                const district = $('#district option:selected').text().trim();
+                const city = $('#city option:selected').text().trim();
+
+                // Kiểm tra xem địa chỉ có đầy đủ không
+                const userAddress = [street, ward, district, city].filter(Boolean).join(', ');
+
+                formData = {
+                    user_name: $('#user_name').val().trim(),
+                    user_phone: $('#user_phone').val().trim(),
+                    user_address: userAddress,
+                    voucher_code: $('#voucher_code').val().trim() || null
+                };
+
+                // Kiểm tra các trường thông tin
+                if (!formData.user_name || !formData.user_phone || !formData.user_address) {
+                    alert("Vui lòng điền đầy đủ thông tin trong form mới.");
+                    return;
+                }
+            } else {
+                // Lấy thông tin mặc định
+                formData = {
+                    user_name: $('#defaultInfo #user_name').val().trim(),
+                    user_phone: $('#defaultInfo #user_phone').val().trim(),
+                    user_address: $('#defaultInfo #user_address').val().trim(),
+                    voucher_code: $('#voucher_code').val().trim() || null
+                };
+            }
+
+            // Gửi dữ liệu AJAX
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'UserMember:confirm_order' %}",
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        alert("Đặt hàng thành công!");
+                        location.reload();
+                    } else {
+                        alert("Lỗi từ server: " + response.error);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi khi gửi yêu cầu:", error);
+                    alert("Đã xảy ra lỗi trong quá trình đặt hàng. Vui lòng thử lại.");
+                }
+            });
+        });
+
+
+        // Khởi tạo trạng thái ban đầu
+        $(document).ready(function () {
+            toggleUserInfo();
+            $('input[name="userType"]').on('change', toggleUserInfo);
+        });
+    </script>
+
+    <!--Áp mã voucher-->
+    <script>
+    function applyVoucher() {
+        const voucherCode = document.getElementById("voucher").value;
+        const totalAmount = parseFloat(document.getElementById("cart-total").innerText.replace(" VNĐ", "").replace(",", ""));
+
+        // Gửi yêu cầu AJAX để kiểm tra mã voucher và tính toán giảm giá
+        fetch('/apply-voucher/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: new URLSearchParams({
+                'voucher_code': voucherCode,
+                'total_amount': totalAmount,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("voucher-total").innerText = `${data.discountAmount}`;
+                document.getElementById("final-total").innerText = `${data.finalTotal}`;
+                alert("Voucher đã được áp dụng!");
+            } else {
+                alert(data.error);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    </script>
+
+    <!--Hide QR Code-->
+    <script>
+        // Get the radio buttons and the QR code container
+        const radio1 = document.getElementById('radioNoLabel1v');
+        const radio2 = document.getElementById('radioNoLabel2v');
+        const qrCode = document.getElementById('qrCode');
+
+        radio1.addEventListener('change', () => {
+            if (radio1.checked) {
+                qrCode.style.display = 'none';
+            }
+        });
+
+        radio2.addEventListener('change', () => {
+            if (radio2.checked) {
+                qrCode.style.display = 'block';
+            }
+        });
+    </script>
+    {% endblock %}
+</body>
+</html>

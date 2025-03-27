@@ -1,0 +1,14 @@
+{% autoescape off %}
+Xin chào {{ user.full_name }},
+
+Chúng tôi xin thông báo rằng tài khoản của bạn đã bị vô hiệu hóa vào ngày {{ user.ngaydangnhap|date:"d/m/Y" }}. 
+
+Nguyên nhân có thể do tài khoản không hoạt động trong thời gian dài hoặc vi phạm chính sách sử dụng.
+
+Nếu bạn có bất kỳ thắc mắc nào, vui lòng liên hệ với bộ phận hỗ trợ qua email: support@yourdomain.com.
+
+Chúng tôi xin chân thành cảm ơn bạn đã sử dụng dịch vụ.
+
+Trân trọng,
+Đội ngũ hỗ trợ của chúng tôi
+{% endautoescape %}

@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/layout.html" %}
+    <title>{% block title %} Liên hệ {% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+    {% load static %}
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container d-flex justify-content-end">
+            <span class="display-3 mb-3 animated slideInDown" style="font-weight:800; font-size:72px;"> &nbsp; Liên hệ &nbsp;  </span>
+        </div>
+    </div>
+
+    <div class="container-fluid py-2">
+        <div class="container">
+            <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <h1 class="display-5 mb-3">Thông tin liên hệ</h1>
+                <p>
+                    Hãy liên hệ ngay với chúng tôi nếu bạn gặp bất kỳ vấn đề không hài lòng nào
+                    – Chúng tôi luôn sẵn sàng hỗ trợ và giải quyết nhanh chóng cho bạn!
+                </p>
+            </div>
+            <div class="row g-5 justify-content-center">
+                <div class="col-lg-8 col-md-12 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="bg-ombre text-white d-flex flex-column justify-content-center h-100 p-5">
+                        <h5 class="text-white">Hotline</h5>
+                        <p class="mb-3"><i class="fa fa-phone-alt me-3"></i>028 6270 6275</p>
+                        <h5 class="text-white">Email</h5>
+                        <p class="mb-3"><i class="fa fa-envelope me-3"></i>freshfruit@gmail.com</p>
+                        <h5 class="text-white">Văn phòng chính</h5>
+                        <p class="mb-3">
+                            <i class="fa fa-map-marker-alt me-3"></i>140 Lê Trọng Tấn, Tây Thạnh, Tân Phú, Hồ Chí Minh
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.06734787271!2d106.62609067388799!3d10.806153889344378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752be27d8b4f4d%3A0x92dcba2950430867!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBUaMawxqFuZyBUUC4gSOG7kyBDaMOtIE1pbmggKEhVSVQp!5e0!3m2!1svi!2s!4v1734354365334!5m2!1svi!2s"
+                                    class="rounded w-100 mt-1" style="border:0;" allowfullscreen="" loading="lazy" title="Bản đồ Văn Phòng Chính"></iframe>
+                        </p>
+                        <h5 class="text-white">Cửa hàng</h5>
+                        <p class="mb-3">
+                            <i class="fa fa-map-marker-alt me-3"></i>86 Phạm Ngọc Thảo, Tây Thạnh, Tân Phú, Hồ Chí Minh
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.0276554040984!2d106.6299774!3d10.809193700000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175295f34982a3b%3A0x215003057b16fbb6!2zU8OibiBCw7NuZyBE4bqhIFBoaSBDxqE!5e0!3m2!1svi!2sus!4v1734355509197!5m2!1svi!2sus" 
+                                    class="rounded w-100 mt-1" style="border:0;" allowfullscreen="" loading="lazy" title="Bản đồ Cửa hàng"></iframe>
+                        </p>
+                        <h5 class="text-white">Hãy theo dõi chúng tôi trên</h5>
+                        <div class="d-flex pt-2">
+                            <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-youtube"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>               
+            </div>            
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

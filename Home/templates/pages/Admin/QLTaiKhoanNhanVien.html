@@ -1,0 +1,342 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Tài khoản Nhân viên</title>
+    {% extends "layout/admin.html" %}
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+</head>
+<body>
+    {% block content %}
+    <div class="container-fluid mt-4">
+        <!-- Header Section -->
+        <div class="row">
+            <div class="col-md-10">
+                <h2>Quản lý Tài khoản Nhân viên</h2>
+            </div>
+            <div class="col-md-2 text-end">
+                <button class="btn btn-success mt-3" onclick="openAddModal()">+ Thêm Nhân Viên</button>
+            </div>
+        </div>       
+
+        <!-- Bảng danh sách nhân viên -->
+        <table class="table table-hover mt-3">
+            <thead class="table-success">
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">Tên Nhân Viên</th>
+                    <th class="text-center">Tên Đăng Nhập</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Địa chỉ</th>
+                    <th class="text-center">Chức vụ</th>
+                    <th class="text-center">Hành Động</th>
+                    <th class="text-center">Cấp quyền</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nhanvien in dsTaiKhoanNhanVien %}
+                <tr>
+                    <td class="text-center">{{ nhanvien.stt_nhanvien }}</td>
+                    <td class="text-center">{{ nhanvien.full_name }}</td>
+                    <td class="text-center">{{ nhanvien.username }}</td>
+                    <td class="text-center">{{ nhanvien.email }}</td>
+                    <td class="text-center">
+                        {{ nhanvien.street }},
+                        {% if nhanvien.ward %}{{ nhanvien.ward.TenPhuong }}, {% endif %}
+                        {% if nhanvien.district %}{{ nhanvien.district.TenQuan }}, {% endif %}
+                        {% if nhanvien.city %}{{ nhanvien.city.TenTP }}{% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if nhanvien.is_admin %}
+                            <span class="text-danger">Admin</span>
+                        {% elif nhanvien.is_manager %}
+                            <span class="text-primary">Quản lý</span>
+                        {% else %}
+                            <span>Nhân viên</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-warning btn-sm"
+                                onclick="openEditModal(
+                                    '{{ nhanvien.id }}',
+                                    '{{ nhanvien.username }}',
+                                    '{{ nhanvien.email }}',
+                                    '{{ nhanvien.full_name }}',
+                                    '{{ nhanvien.phone }}',
+                                    '{{ nhanvien.street }}',
+                                    '{{ nhanvien.city.id|default:"" }}',
+                                    '{{ nhanvien.district.id|default:"" }}',
+                                    '{{ nhanvien.ward.id|default:"" }}'
+                                )">
+                            Sửa
+                        </button>
+                        {% if not nhanvien.is_admin %} {# Prevent admin users from being deleted #}
+                            <form action="{% url 'UserMember:xoa_nhanvien' nhanvien.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button class="btn btn-sm" style="background-color:darkorange" type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                    Xóa
+                                </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if request.user.is_admin and not nhanvien.is_admin %}
+                            <form action="{% url 'UserMember:cap_quyen_nhanvien' nhanvien.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                {% if nhanvien.is_manager %}
+                                    <button type="submit" class="btn btn-danger btn-sm">Thu hồi quyền</button>
+                                {% else %}
+                                    <button type="submit" class="btn btn-success btn-sm">Cấp quyền Quản lý</button>
+                                {% endif %}
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center">Không có nhân viên nào</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Modal thêm/sửa nhân viên -->
+    <div class="modal fade" id="modalNhanVien" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Thêm Nhân Viên</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formNhanVien" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- Thông báo lỗi -->
+                        <div id="form-errors" style="display: none;">
+                            <div class="alert alert-danger" role="alert">
+                                <ul id="error-list"></ul>
+                            </div>
+                        </div>
+    
+                        <!-- Form nội dung -->
+                        <div class="form-group mb-3">
+                            <label for="full_name">Tên Nhân Viên</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="username">Tên Đăng Nhập</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="phone">Số Điện Thoại</label>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="street">Địa Chỉ (Số nhà, đường)</label>
+                            <input type="text" class="form-control" id="street" name="street" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="city">Thành Phố</label>
+                                <select class="form-select" id="city" name="city" required onchange="filterCity()">
+                                    <option value="">Chọn Thành phố</option>
+                                    {% for ct in city_lst %}
+                                    <option value="{{ ct.MaTP }}">{{ ct.TenTP }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="district">Quận/Huyện</label>
+                                <select class="form-select" id="district" name="district" required onchange="filterDistrict()">
+                                    <option value="">Chọn Quận/Huyện</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ward">Phường/Xã</label>
+                                <select class="form-select" id="ward" name="ward" required>
+                                    <option value="">Chọn Phường/Xã</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password">Mật Khẩu</label>
+                            </div>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-success" id="save-btn">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script -->
+    <script>
+        document.getElementById('formNhanVien').addEventListener('submit', function (e) {
+            e.preventDefault(); // Ngăn form submit mặc định
+        
+            const form = e.target;
+            const url = form.action; // Lấy URL action của form
+            const formData = new FormData(form);
+        
+            // Xóa lỗi cũ
+            hideFormErrors();
+        
+            // Gửi request AJAX
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest', // Đảm bảo backend nhận biết là AJAX request
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Nếu thành công, reload trang hoặc cập nhật danh sách
+                        location.reload(); // Tải lại trang để cập nhật dữ liệu
+                    } else {
+                        // Hiển thị lỗi nếu có
+                        showFormErrors(data.errors);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    showFormErrors({ 'server': 'Có lỗi xảy ra khi xử lý yêu cầu.' });
+                });
+        });
+        
+        function openAddModal() {
+            document.getElementById('modalLabel').innerText = 'Thêm Nhân Viên';
+            document.getElementById('formNhanVien').action = "{% url 'UserMember:them_nhanvien' %}";
+            resetForm();
+            hideFormErrors();
+            var modal = new bootstrap.Modal(document.getElementById('modalNhanVien'));
+            modal.show();
+        }
+        
+        function openEditModal(id, username, email, full_name, phone, street, city, district, ward) {
+            document.getElementById('modalLabel').innerText = 'Sửa Nhân Viên';
+            document.getElementById('formNhanVien').action = "{% url 'UserMember:sua_nhanvien' 0 %}".replace('0', id);
+            document.getElementById('full_name').value = full_name;
+            document.getElementById('username').value = username;
+            document.getElementById('email').value = email;
+            document.getElementById('phone').value = phone;
+            document.getElementById('street').value = street;
+            document.getElementById('city').value = city;
+            document.getElementById('district').value = district;
+            document.getElementById('ward').value = ward;
+            document.getElementById('password').value = '';
+            hideFormErrors();
+            var modal = new bootstrap.Modal(document.getElementById('modalNhanVien'));
+            modal.show();
+        }
+        
+        function resetForm() {
+            document.getElementById('full_name').value = '';
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('street').value = '';
+            document.getElementById('street').value ='' ;
+            document.getElementById('city').value = '';
+            document.getElementById('district').value ='' ;
+            document.getElementById('password').value = '';
+        }
+        
+        function hideFormErrors() {
+            document.getElementById('form-errors').style.display = 'none';
+            document.getElementById('error-list').innerHTML = '';
+        }
+        
+        function showFormErrors(errors) {
+            const errorList = document.getElementById('error-list');
+            errorList.innerHTML = ''; // Xóa các lỗi cũ
+        
+            for (const key in errors) {
+                const li = document.createElement('li');
+                li.textContent = errors[key];
+                errorList.appendChild(li);
+            }
+            document.getElementById('form-errors').style.display = 'block';
+        }
+        
+    </script>
+    <script>
+        function filterCity() {
+            const cityId = document.getElementById("city").value;
+            console.log("Selected cityId:", cityId); // Log để kiểm tra giá trị cityId
+        
+            if (!cityId) {
+                document.getElementById("district").innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+                document.getElementById("ward").innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                return;
+            }
+        
+            fetch(`/get_quan_by_thanh_pho/${cityId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Districts data:", data.districts); // Log danh sách quận
+        
+                    const districtSelect = document.getElementById("district");
+                    districtSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+                    data.districts.forEach(district => {
+                        const option = document.createElement("option");
+                        option.value = district.id; // Đảm bảo giá trị này là id hợp lệ
+                        option.textContent = district.name; // Tên hiển thị của quận
+                        districtSelect.appendChild(option);
+                    });
+        
+                    // Reset danh sách phường/xã
+                    document.getElementById("ward").innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                })
+                .catch(error => {
+                    console.error("Error fetching districts:", error);
+                });
+        }
+        
+        function filterDistrict() {
+            const districtId = document.getElementById("district").value;
+            console.log("Selected districtId:", districtId); // Log để kiểm tra giá trị districtId
+        
+            if (!districtId || districtId === "undefined") {
+                console.error("Invalid districtId:", districtId);
+                document.getElementById("ward").innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                return;
+            }
+        
+            fetch(`/get_phuong_by_quan/${districtId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Wards data:", data.wards); // Log danh sách phường
+        
+                    const wardSelect = document.getElementById("ward");
+                    wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                    data.wards.forEach(ward => {
+                        const option = document.createElement("option");
+                        option.value = ward.id; // Đảm bảo giá trị này là id hợp lệ
+                        option.textContent = ward.name; // Tên hiển thị của phường
+                        wardSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching wards:", error);
+                });
+        }
+        
+    </script>
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %}Nội bộ{% endblock %}</title>
+    {% load static %}
+</head>
+<body>
+    {% block content %}
+
+    <!-- Về chúng tôi Start -->
+    <div class="container-fluid bg-icon my-3 py-5">
+        <div class="container">
+            <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 700px;">
+                {% if user.is_authenticated %}
+                <h1 class="display-5 mb-3">Hello, {{ user.full_name }}</h1>
+                {% endif %}
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="bg-white text-center h-100 p-4 p-xl-5">
+                        <img class="img-fluid mb-4" style="width:30%" src="{% static 'image/icon4.png' %}" alt="">
+                        <h4 class="mb-3">Làm việc tích cực</h4>
+                        <p class="mb-4">
+                            Duy trì thái độ tích cực và nỗ lực hết mình trong từng nhiệm vụ để đóng góp vào thành công chung của đội nhóm.
+                        </p>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="bg-white text-center h-100 p-4 p-xl-5">
+                        <img class="img-fluid mb-4" style="width:30%" src="{% static 'image/icon5.png' %}" alt="">
+                        <h4 class="mb-3">Hoàn thành mục tiêu</h4>
+                        <p class="mb-4">
+                            Đặt mục tiêu cá nhân mỗi tuần, từng bước hoàn thành các công việc khó khăn và không ngừng cải thiện bản thân.
+                        </p>
+                       
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="bg-white text-center h-100 p-4 p-xl-5">
+                        <img class="img-fluid mb-4" style="width:30%" src="{% static 'image/icon6.png' %}" alt="">
+                        <h4 class="mb-3">Đồng hành cùng đội nhóm</h4>
+                        <p class="mb-4">
+                            Hướng tới hoàn thành hoặc vượt chỉ tiêu doanh thu hàng tháng, với tinh thần hợp tác và cam kết vì sự phát triển chung.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

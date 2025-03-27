@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% extends "layout/admin.html" %}
+    <title>{% block title %}Quản lý Tin Tức{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+{% block content %}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-10"><h2 class=" mb-4">Quản lý Tin Tức</h2></div>
+        <div class="col-2 text-end">
+            <a href="{% url 'UserMember:them_tin_tuc' %}" class="btn btn-success mb-3">+ Thêm Tin tức</a>
+        </div>
+    </div>   
+
+    <table class="table table-striped">
+        <thead class="table-success">
+            <tr class="text-center">
+                <th>Mã Tin</th>
+                <th>Ảnh Đại Diện</th>
+                <th>Tiêu Đề</th>
+                <th>Ngày Đăng</th>
+                <th>Tác Giả</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tin in dsTinTuc %}
+            <tr class="text-center">
+                <td>{{ tin.MaTin }}</td>
+                <td>
+                    {% if tin.AnhDaiDien %}
+                    <img src="{{ tin.AnhDaiDien.url }}" alt="Ảnh đại diện" style="width: 100px; height: auto;">
+                    {% else %}
+                    <p>Không có ảnh</p>
+                    {% endif %}
+                </td>
+                <td>{{ tin.TieuDe }}</td>
+                <td>{{ tin.NgayDang |date:"d/m/Y"}}</td>
+                <td>
+                    {% if tin.TacGia %}
+                    {{ tin.TacGia.username }}  <!-- Hiển thị tên đăng nhập của admin -->
+                    {% else %}
+                    Fresh Fruit
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'UserMember:xem_tin_tuc' tin.MaTin %}" class="btn btn-outline-secondary btn-sm">Chi tiết</a>
+                    <a href="{% url 'UserMember:sua_tin_tuc' tin.MaTin %}" class="btn btn-warning btn-sm">Sửa</a>
+                    <form action="{% url 'UserMember:xoa_tin_tuc' tin.MaTin %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm" style="background-color: darkorange" onclick="return confirm('Bạn có chắc chắn muốn xóa tin tức này không?');">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">Chưa có Tin tức nào.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+</body>
+</html>

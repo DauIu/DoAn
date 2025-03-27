@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %} Đơn hàng {% endblock %}</title>
+    {% load static %}
+</head>
+<body>
+    {% block content %}
+    <h2>Danh sách Đơn hàng của {{ khach_hang.full_name }}</h2>
+<table class="table table-hover">
+    <thead class="table-success">
+        <tr>
+            <th class="text-center">Mã Đơn</th>
+            <th class="text-center">Ngày Đặt</th>
+            <th class="text-center">Tổng Tiền</th>
+            <th class="text-center">Trạng Thái</th>
+            <th class="text-center">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td class="text-center">{{ order.MaDH }}</td>
+            <td class="text-center">{{ order.NgayDat|date:"d/m/Y" }}</td></td>
+            <td class="text-center">{{ order.TongTien }}</td>
+            <td class="text-center">{{ order.TrangThai }}</td>
+            <td class="text-center">
+                <button class="btn btn-outline-secondary" onclick="openDetailModal('{{ order.MaDH }}')">Chi tiết</button>
+               {% comment %} <a class="btn btn-primary btn-sm" href="{% url 'UserMember:xem_chitiet_donhang' don_hang.id %}">
+                    Xem Chi Tiết
+                </a>  {% endcomment %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">Không có đơn hàng nào</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-success" id="detailModalLabel">Chi tiết đơn hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Mã đơn hàng:</strong> <span id="detailMaDH"></span></p>
+                <p><strong>Tên Người đặt:</strong> <span id="detailTenKH"></span></p>
+                <p><strong>Ngày đặt:</strong> <span id="detailNgayDat"></span></p>
+                <p><strong>Ngày nhận:</strong> <span id="detailNgayNhan"></span></p>
+                <p><strong>Tổng tiền:</strong> <span id="detailTongTien"></span></p>
+                <p><strong>Trạng thái:</strong> <span id="detailTrangThai"></span></p>
+                <h5>Danh sách sản phẩm</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th class="text-center">Giá</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-center">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailSanPhamList">
+                        <!-- Nội dung sản phẩm sẽ được load vào đây -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function openDetailModal(MaDH) {
+        fetch(`/api/get_ct_donhang/${MaDH}/`)
+            .then(response => {
+                if (!response.ok) throw new Error('API Error');
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('detailMaDH').textContent = data.MaDH;
+                document.getElementById('detailTenKH').textContent = data.TenKH;
+                document.getElementById('detailNgayDat').textContent = data.NgayDat;
+                document.getElementById('detailNgayNhan').textContent = data.NgayNhan;
+                document.getElementById('detailTongTien').textContent = `${data.TongTien.toLocaleString()} VND`;
+                document.getElementById('detailTrangThai').textContent = data.TrangThai;
+
+                // Hiển thị danh sách sản phẩm
+                const sanPhamList = document.getElementById('detailSanPhamList');
+                sanPhamList.innerHTML = ''; // Xóa dữ liệu cũ
+                data.SanPham.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.TenSP}</td>
+                        <td class="text-center">${product.Gia.toFixed(3)} VND</td>
+                        <td class="text-center">${product.SoLuong}</td>
+                        <td class="text-center">${product.ThanhTien.toFixed(3)} VND</td>
+                    `;
+                    sanPhamList.appendChild(row);
+                });
+
+                new bootstrap.Modal(document.getElementById('detailModal')).show();
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Không thể tải thông tin!");
+            });
+    }
+</script>
+    {% endblock %}
+</body>
+</html>

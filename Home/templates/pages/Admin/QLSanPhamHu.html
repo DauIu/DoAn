@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    {% extends "layout/admin.html" %}
+    <title>{% block title %}Quản lý sản phẩm hư{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Khi người dùng chọn loại sản phẩm
+            $('#loaiSanPham').change(function () {
+                var loaiId = $(this).val();
+                console.log("Loại sản phẩm được chọn:", loaiId); // Debug: Kiểm tra giá trị được chọn
+                
+                // Gửi yêu cầu để tải lại trang với tham số lọc loại sản phẩm
+                var currentUrl = window.location.href.split('?')[0]; // Lấy URL hiện tại và loại bỏ phần query string nếu có
+                var newUrl = currentUrl + "?loai=" + loaiId; // Thêm tham số loai vào URL
+                
+                window.location.href = newUrl; // Tải lại trang với tham số mới
+            });
+        });
+    </script>
+</head>
+<body>
+    {% block content %}
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-9"> <h2 class="mb-4">Danh sách sản phẩm hư</h2></div>
+            <div class="col-3 text-end"><a href="{% url 'UserMember:them_sanpham_hu' %}" class="btn btn-success">+ Thêm Sản phẩm hư</a></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6">
+                <form method="GET" action="" id="filterForm">
+                    <select id="loaiSanPham" name="loai" class="form-select" onchange="this.form.submit()">
+                        <option value="" {% if not selected_loai %}selected{% endif %}>Tất cả sản phẩm</option>
+                        {% for loai in dsLoai %}
+                        <option value="{{ loai.MaLoai }}"
+                                {% if selected_loai and loai.MaLoai == selected_loai.MaLoai %}selected{% endif %}>
+                            {{ loai.TenLoai }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6">                
+                <form method="GET" action="">
+                    <div class="input-group mb-3">
+                        <input type="text" name="q" class="form-control" placeholder="Nhập tên sản phẩm..." value="{{ keyword|default:'' }}">
+                        <button class="btn btn-success" type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        
+
+        <!-- Bảng danh sách sản phẩm hư -->
+        <div class="table-responsive mt-3">
+            <table class="table table-borderles table-hover align-middle">
+                <thead class="table-success">
+                    <tr class="text-center">
+                        <th>Mã</th>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Ngày hư</th>
+                        <th>Lý do</th>
+                        <th>Hình ảnh</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if dsSanPhamhu %}
+                    {% for sp in dsSanPhamhu %}
+                    <tr class="text-center">
+                        <td>{{ sp.MaSP_Hu }}</td>
+                        <td>{{ sp.MaSP.TenSP|default:"(Không xác định)" }}</td>
+                        <td>{{ sp.SoLuong }}</td>
+                        <td>{{ sp.NgayHu|date:"d/m/Y" }}</td>
+                        <td>{{ sp.LyDo }}</td>
+                        <td>
+                            {% if sp.HinhAnh %}
+                            <img class="img-fluid" style="width: 150px; height: 100px" src="{{ sp.HinhAnh.url }}" alt="Hình ảnh" width="100">
+                            {% else %}
+                            Không có ảnh
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'UserMember:sua_sanpham_hu' ma_sp_hu=sp.MaSP_Hu %}" class="btn btn-warning btn-sm">Sửa</a>
+                            <form action="{% url 'UserMember:xoa_sanpham_hu' ma_sp_hu=sp.MaSP_Hu %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm" style="background-color: darkorange" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm: {{ sp.MaSP.TenSP|default:"(Không xác định)" }}?');">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr class="text-center">
+                        <td colspan="7">
+                            {% if keyword %}
+                            Không tìm thấy sản phẩm nào phù hợp với từ khóa "<strong>{{ keyword }}</strong>".
+                            {% else %}
+                            Không có sản phẩm hư nào.
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            <div class="col-md-6 text-md-end">
+                <a href="{% url 'UserMember:xuat_excel_san_pham_hu' %}" class="btn btn-primary">
+                    <i class="fas fa-file-excel"></i> Xuất Excel
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

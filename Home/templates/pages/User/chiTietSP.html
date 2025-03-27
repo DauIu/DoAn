@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title>Chi tiết sản phẩm</title>
+	{% extends "layout/layout.html" %}
+	{% load static %}
+</head>
+<body>
+	{% block content %}
+	<div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+		<div class="container d-flex justify-content-end">
+			<span class="display-3 mb-3 animated slideInDown" style="font-weight:800; font-size:72px;">Chi tiết</span>
+		</div>
+	</div>
+
+	<div class="breadcrumb_background margin-bottom-40">
+		<section class="bread-crumb">
+			<span class="crumb-border"></span>
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12 a-center">
+						<ul class="breadcrumb">
+							<li class="home">
+								<a href="/" previewlistener="true" class="text-decoration-none text-success"><span>Trang chủ</span></a>
+								<span class="mr_lr">&nbsp;<i class="fa fa-angle-right"></i>&nbsp;</span>
+							</li>
+							<li>
+								<a class="changeurl text-decoration-none text-success" href="/DSSanPham" previewlistener="true"><span>Sản phẩm</span></a>
+								<span class="mr_lr">&nbsp;<i class="fa fa-angle-right"></i>&nbsp;</span>
+							</li>
+							<li><strong><span>{{san_pham.TenSP}}</span></strong></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<section class="product f-left w_100">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 wow fadeIn">
+					<div class="about-img position-relative overflow-hidden p-5 pe-0">
+						<img style="width:400px; height:400px" src="{% static 'products/' %}{{ san_pham.HinhAnh }}">
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-7">
+					<h1 class="title-product">{{san_pham.TenSP}}</h1>
+					<span>Số lượng hàng: <strong> {{san_pham.SoLuongHienTai}}</strong></span> |
+					<span>
+						Tình trạng:
+						<strong class="status_name {% if san_pham.SoLuongHienTai > 0 %}text-success{% else %}text-danger{% endif %}">
+							{% if san_pham.SoLuongHienTai > 0 %}
+							Còn hàng
+							{% else %}
+							Hết hàng
+							{% endif %}
+						</strong>
+						</span>
+						<hr />
+						<h3 class="text-ombre">Giá bán: {{san_pham.GiaBan}}₫</h3>
+						<hr />
+						<p>Nguồn gốc: {{san_pham.NguonGoc}}</p>
+						<p>Đơn vị tính: {{san_pham.DVT}}</p>
+						<p>Khối lượng: {{san_pham.TrongLuong}}</p>
+						<div class="d-flex flex-row mb-3 align-items-center">
+							<label for="qtym" class="mr-2">Đặt hàng:</label> &nbsp;
+							<input id="qtym" name="quantity" value="1" type="number" min="1" max="{{san_pham.SoLuongHienTai}}" maxlength="2" class="form-control form-control-sm text-center custom-input border border-success" style="width: 80px;">
+						</div>
+						<button type="button" onclick="addToCart(event, '{{ san_pham.MaSP }}', '{{ san_pham.SoLuongHienTai }}')" class="text-body text-decoration-none btn btn-success btn-add-to-cart">
+										<span class="btn btn-success"><i class="bi bi-basket2-fill"></i> Thêm vào giỏ hàng</span>
+						</button>
+						
+				</div>
+			</div>
+		</div>
+
+		<hr />
+		<div class="container mt-3">
+			<div class="row">
+				<div class="tab_h">
+					<div class="col-xs-12 col-lg-12 col-sm-12 col-md-12">
+						<div class="product-tab e-tabs">
+							<ul class="tabs tabs-title clearfix">
+								<li class="tab-link" data-tab="tab-1">
+									<h3>Mô tả sản phẩm</h3>
+								</li>
+
+								<p style="text-align: justify;">{{san_pham.MoTa}}</p>
+
+
+								<li class="tab-link" data-tab="tab-2">
+									<h3>Cách bảo quản sản phẩm</h3>
+								</li>
+
+								<p style="text-align: justify;">{{san_pham.BaoQuan}}</p>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+		function addToCart(event, productId, soLuong) {
+			event.preventDefault();
+	   
+			const qtyInput = document.getElementById('qtym');
+			const quantity = parseInt(qtyInput.value);
+
+			// Kiểm tra xem số lượng mua có vượt quá số lượng còn
+			if (quantity > soLuong) {
+                alert(`Số lượng mua vượt quá số lượng hàng đanh có.\nChỉ còn ${soLuong} sản phẩm.`);
+                return;  
+            }
+	   
+			fetch('/cart/add/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+					'X-CSRFToken': '{{ csrf_token }}'
+				},
+				body: new URLSearchParams({
+					'variantId': productId,
+					'quantity': quantity
+				})
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					alert(`${data.product_name} đã được thêm vào giỏ hàng.`);
+				} else if (data.require_login) {
+					alert(data.message || "Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+					window.location.href = '/DangNhap/';
+				} else {
+					alert(data.error);
+				}
+			})
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+            });
+		}
+	   </script>
+	{% endblock %}
+</body>
+</html>

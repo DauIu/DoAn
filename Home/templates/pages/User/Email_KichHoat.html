@@ -1,0 +1,14 @@
+{% autoescape off %}
+Xin chào {{ user.full_name }},
+
+Chúng tôi xin thông báo rằngTài khoản của bạn đã được kích hoạt lại vào ngày {{ user.ngaydangnhap|date:"d/m/Y" }}. 
+
+Bạn có thể đăng nhập để tiếp tục sử dụng dịch vụ.
+
+Nếu bạn có bất kỳ thắc mắc nào, vui lòng liên hệ với bộ phận hỗ trợ qua email: support@yourdomain.com.
+
+Chúng tôi xin chân thành cảm ơn bạn đã sử dụng dịch vụ.
+
+Trân trọng,
+Đội ngũ hỗ trợ của chúng tôi
+{% endautoescape %}

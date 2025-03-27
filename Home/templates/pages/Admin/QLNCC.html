@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %} Quản lý Nhà Cung Cấp {% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+    <div class="row">
+        <div class="col-8"><h2>Danh sách Nhà Cung Cấp</h2></div>
+        <div class="col-4 d-flex justify-content-end align-items-center">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalNCC" onclick="openAddModal()">+ Thêm Nhà cung cấp</button>
+        </div>
+    </div>
+
+    <table class="table table-white table-hover mt-3">
+        <thead class="table-success">
+            <tr>
+                <th class="text-center" style="width: 5%;">Mã</th>
+                <th class="text-center" style="width: 20%; ">Tên Nhà Cung Cấp</th>
+                <th class="text-center" style="width: 20%; ">Địa Chỉ</th>
+                <th class="text-center" style="width: 10%;">Số Điện Thoại</th>
+                <th class="text-center" style="width: 15%; ">Email</th>
+                <th class="text-center" style="width: 15%; ">Website</th>
+                <th class="text-center" style="width: 15%; "></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ncc in dsncc %}
+            <tr>
+                <th scope="row" class="text-center">{{ ncc.MaNCC }}</th>
+                <td class="text-center">{{ ncc.TenNCC }}</td>
+                <td class="text-center">{{ ncc.DiaChi }}</td>
+                <td class="text-center">{{ ncc.SoDienThoai }}</td>
+                <td class="text-center">{{ ncc.Email }}</td>
+                <td class="text-center">{{ ncc.Website }}</td>
+                <td class="text-center">
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalNCC"
+                        onclick="openEditModal('{{ ncc.MaNCC }}', '{{ ncc.TenNCC }}', '{{ ncc.DiaChi }}', '{{ ncc.SoDienThoai }}', '{{ ncc.Email }}', '{{ ncc.Website }}')">Sửa</button>
+                    <a class="btn" style="background-color:darkorange" 
+                        href="{% url 'UserMember:xoa_ncc' ncc.MaNCC %}"
+                        onclick="return confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này không?');">Xóa</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">Không có nhà cung cấp nào</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal Popup for adding/editing suppliers -->
+    <div class="modal fade" id="modalNCC" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Thêm Nhà Cung Cấp</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formNCC" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="TenNCC">Tên Nhà Cung Cấp</label>
+                            <input type="text" class="form-control" id="TenNCC" name="TenNCC" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="DiaChi">Địa Chỉ</label>
+                            <textarea class="form-control" id="DiaChi" name="DiaChi" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="SoDienThoai">Số Điện Thoại</label>
+                            <input type="tel" class="form-control" id="SoDienThoai" name="SoDienThoai" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Email">Email</label>
+                            <input type="email" class="form-control" id="Email" name="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Website">Website</label>
+                            <input type="text" class="form-control" id="Website" name="Website" pattern="^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+)\.[a-zA-Z]{2,}$" title="Website hợp lệ (Ví dụ: www.hoaquaviet.com)" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-success">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap and jQuery -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <script>
+        const addUrl = "{% url 'UserMember:them_ncc' %}";
+        const editUrlTemplate = "{% url 'UserMember:sua_ncc' 0 %}";
+
+        // Open modal to Add Supplier
+        function openAddModal() {
+            document.getElementById('modalLabel').innerText = 'Thêm Nhà Cung Cấp';
+            document.getElementById('TenNCC').value = '';  
+            document.getElementById('DiaChi').value = '';  
+            document.getElementById('SoDienThoai').value = '';  
+            document.getElementById('Email').value = '';  
+            document.getElementById('Website').value = '';  
+            document.getElementById('formNCC').action = addUrl; 
+        }
+
+        // Open modal to Edit Supplier
+        function openEditModal(MaNCC, TenNCC, DiaChi, SoDienThoai, Email, Website) {
+            document.getElementById('modalLabel').innerText = 'Sửa Nhà Cung Cấp';
+            document.getElementById('TenNCC').value = TenNCC;
+            document.getElementById('DiaChi').value = DiaChi; 
+            document.getElementById('SoDienThoai').value = SoDienThoai;  
+            document.getElementById('Email').value = Email; 
+            document.getElementById('Website').value = Website;
+            
+            // Cập nhật action của form khi sửa
+            document.getElementById('formNCC').action = editUrlTemplate.replace("0", MaNCC);
+        }
+
+        // Thêm http:// nếu không có khi submit form
+        document.getElementById('formNCC').onsubmit = function() {
+            var website = document.getElementById('Website').value;
+            // Thêm http:// nếu không có phần đó
+            if (website && !/^https?:\/\//i.test(website)) {
+                document.getElementById('Website').value = 'http://' + website;
+            }
+        }
+    </script>
+
+    {% endblock %}
+</body>
+</html>

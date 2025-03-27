@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/layout.html" %}
+    <title>{% block title %} Đăng nhập {% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+    {% load static %}
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container d-flex justify-content-end">
+            <span class="display-3 mb-3 animated slideInDown" style="font-weight:800; font-size:72px; opacity: 0.9; "> &nbsp; Đăng nhập &nbsp;  </span>
+        </div>
+    </div>
+
+    <section class="gradient-custom">
+        <div class="container py-2 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <h2 class="text-success text-uppercase">Đăng nhập tại đây</h2>
+                    <form method="post" action="{% url 'UserMember:DangNhap' %}">
+                        {% csrf_token %}
+                        <!-- Username Field -->
+                        <div class="form-floating mb-3">
+                            <input type="text" name="username" class="form-control" id="username" placeholder="">
+                            <label for="username">Tài khoản</label>
+                            {% if form.username.errors %}
+                            <div class="text-danger">
+                                {{ form.username.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="form-floating mb-3">
+                            <input type="password" name="password" class="form-control" id="password" placeholder="">
+                            <label for="password">Mật khẩu</label>
+                            {% if form.password.errors %}
+                            <div class="text-danger">
+                                {{ form.password.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+
+                        <!-- Simple link -->
+                        <div class="text-end mb-3">
+                            <a class="text-decoration-none text-success" href="{% url 'UserMember:custom_password_reset' %}">Quên mật khẩu?</a>
+                        </div>
+
+                        <!-- Submit button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn bg-ombre rounded-1 text-white btn-block mb-4">Đăng nhập</button>
+                        </div>
+
+                        <!-- Register buttons -->
+                        <div class="text-center">
+                            <p>Bạn chưa có tài khoản? <a class="text-success" href="{% url 'UserMember:DangKy' %}">Đăng ký</a></p>
+                            <p>hoặc có thể Đăng ký tài khoản bằng:</p>
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                                <i class="fab fa-facebook-f text-success"></i>
+                            </button>
+
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                                <i class="fab fa-google text-success"></i>
+                            </button>
+
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                                <i class="fab fa-twitter text-success"></i>
+                            </button>
+
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                                <i class="fab fa-github text-success"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Đánh giá sản phẩm</title>
+    <style>
+        .rating:not(:checked) > input {
+            position: absolute;
+            appearance: none;
+        }
+
+        .rating:not(:checked) > label {
+            float: right;
+            cursor: pointer;
+            font-size: 30px;
+            color: #666;
+        }
+
+            .rating:not(:checked) > label:before {
+                content: '★';
+            }
+
+        .rating > input:checked + label:hover,
+        .rating > input:checked + label:hover ~ label,
+        .rating > input:checked ~ label:hover,
+        .rating > input:checked ~ label:hover ~ label,
+        .rating > label:hover ~ input:checked ~ label {
+            color: #e58e09;
+        }
+
+        .rating:not(:checked) > label:hover,
+        .rating:not(:checked) > label:hover ~ label {
+            color: #ff9e0b;
+        }
+
+        .rating > input:checked ~ label {
+            color: #ffa723;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    {% extends "layout/layout.html" %}
+    {% load static %}
+</head>
+<body>
+    {% block content %}
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container d-flex justify-content-end">
+            <span class="display-3 mb-3 animated slideInDown" style="font-weight:800; font-size:72px;"> &nbsp; Đánh giá &nbsp;  </span>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="section-header text-center mx-auto mb-3 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <h1 class="display-5 mb-3">Đánh giá mức độ hài lòng của khách khi sử dụng sản phẩm</h1>
+            <p class="text-muted text-center">Mã đơn hàng: {{ don_hang.MaDH }}</p>
+            <p class="text-muted text-center">Tên người dùng: {{ ten_nguoi_dung }}</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card mx-5">
+            <div class="card-body p-4">
+                <form method="post" enctype="multipart/form-data" class="mt-4">
+                    {% csrf_token %}
+                    <!-- Mức độ hài lòng (sao) -->
+                    <div class="row mb-3">
+                        <div class="col-2 mt-3">
+                            <label for="rating">Mức độ hài lòng:</label>
+                        </div>
+                        <div class="col-2">
+                            <div class="rating">
+                                <input value="5" name="rate" id="star5" type="radio" checked>
+                                <label title="Rất hài lòng" for="star5"></label>
+                                <input value="4" name="rate" id="star4" type="radio">
+                                <label title="Hài lòng" for="star4"></label>
+                                <input value="3" name="rate" id="star3" type="radio">
+                                <label title="Bình thường" for="star3"></label>
+                                <input value="2" name="rate" id="star2" type="radio">
+                                <label title="Không hài lòng" for="star2"></label>
+                                <input value="1" name="rate" id="star1" type="radio">
+                                <label title="Rất không hài lòng" for="star1"></label>
+                            </div>
+                            <input type="hidden" name="Rating" id="rating" value="{{ form.initial.Rating|default:5 }}">
+                        </div>
+                    </div>
+
+                    <!-- Nội dung -->
+                    <div class="form-floating mb-3">
+                        {{ form.NoiDung }}
+                        <label for="noidung">Nội dung</label>
+                    </div>
+
+                    <!-- Ngày viết -->
+                    <div class="form-floating mb-3">
+                        {{ form.NgayViet }}
+                        <label for="ngayviet">Ngày viết</label>
+                    </div>
+
+                    <!-- Hình ảnh -->
+                    <div class="form-floating mb-3">
+                        {{ form.HinhAnh }}
+                        <label for="hinhanh">Hình ảnh</label>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Gửi Đánh Giá</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hàm để cập nhật giá trị rating vào input hidden
+        function updateRating() {
+            // Lấy giá trị của ngôi sao được checked
+            const selectedRating = document.querySelector('input[name="rate"]:checked').value;
+
+            // Cập nhật giá trị vào thẻ input hidden
+            document.getElementById('rating').value = selectedRating;
+
+            // In ra giá trị vào console để kiểm tra
+            console.log('Đánh giá được chọn:', selectedRating);
+        }
+
+        // Lắng nghe sự kiện 'change' của các nút radio để cập nhật khi người dùng chọn ngôi sao khác
+        document.querySelectorAll('input[name="rate"]').forEach(radio => {
+            radio.addEventListener('change', updateRating);
+        });
+
+        // Đảm bảo giá trị ban đầu được thiết lập khi trang được tải
+        window.onload = updateRating;
+    </script>
+    {% endblock %}
+</body>
+</html>

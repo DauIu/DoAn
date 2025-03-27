@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %} Sản phẩm {% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+
+    <div class="row">
+        <div class="col-10"><h2>Danh sách Danh Mục</h2></div>
+        <div class="col-2 d-flex justify-content-end align-items-center">
+            <!-- Nút Thêm sẽ mở modal -->
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalLoai" onclick="openAddModal()">+ Thêm Loại</button>
+        </div>
+    </div>
+
+    <table class="table table-white table-hover mt-3">
+        <thead class="table-success">
+            <tr>
+                <th class="text-center" style="width: 10%;">Mã Danh Mục</th>
+                <th class="text-center" style="width: 55%;">Tên Danh Mục</th>
+                <th class="text-center" style="width: 10%;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loai in dsLoaiSP %}
+            <tr>
+                <th class="text-center" scope="row" style="vertical-align: middle;">{{ loai.MaLoai }}</th>
+                <td style="vertical-align: middle;">{{ loai.TenLoai }}</td>
+                <td class="text-end" style="vertical-align: middle;">
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalLoai" 
+                        onclick="openEditModal('{{ loai.MaLoai }}', '{{ loai.TenLoai }}')">Sửa</button>
+                        <a class="btn" style="background-color:darkorange"
+                            href="{% url 'UserMember:xoa_loai' loai.MaLoai %}" 
+                            onclick="return confirm('Bạn có chắc chắn muốn xóa loại sản phẩm này không?');">Xóa</a>
+
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">Không có loại sản phẩm nào</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal Popup -->
+    <div class="modal fade" id="modalLoai" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Thêm Loại Sản Phẩm</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formLoai" method="POST" action="{% url 'UserMember:them_loai' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" id="MaLoai" name="MaLoai">
+                        <div class="form-group">
+                            <label for="TenLoai">Tên Loại Sản Phẩm</label>
+                            <input type="text" class="form-control" id="TenLoai" name="TenLoai" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-success">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <script>
+        function openAddModal() {
+            console.log("Mở modal Thêm");  // Kiểm tra xem sự kiện này có hoạt động không
+            document.getElementById('modalLabel').innerText = 'Thêm Loại Sản Phẩm';
+            document.getElementById('MaLoai').value = '';  // Xóa giá trị cũ
+            document.getElementById('TenLoai').value = '';  // Reset tên loại
+            document.getElementById('formLoai').action = "{% url 'UserMember:them_loai' %}";  // Đặt action cho form thêm
+        }
+    
+        // Mở modal Sửa
+        function openEditModal(MaLoai, TenLoai) {
+            console.log("Mở modal Sửa với MaLoai: " + MaLoai);  // Kiểm tra xem sự kiện này có hoạt động không
+            document.getElementById('modalLabel').innerText = 'Sửa Loại Sản Phẩm';
+            document.getElementById('MaLoai').value = MaLoai;  // Đặt giá trị MaLoai
+            document.getElementById('TenLoai').value = TenLoai;  // Đặt giá trị tên loại
+    
+            // Thay thế '0' bằng giá trị MaLoai
+            var actionUrl = "{% url 'UserMember:sua_loai' 0 %}".replace('0', MaLoai);  
+    document.getElementById('formLoai').action = actionUrl;
+        }
+    </script>
+
+    {% endblock %}
+</body>
+</html>

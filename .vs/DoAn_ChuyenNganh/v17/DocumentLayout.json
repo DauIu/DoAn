@@ -1,0 +1,372 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLDanhGia.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\Admin\\QLDanhGia.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLTinTuc.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\Admin\\QLTinTuc.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLSanPham.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\Admin\\QLSanPham.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLLoai.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\Admin\\QLLoai.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\views.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\Voucher.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\User\\Voucher.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLVoucher.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\Admin\\QLVoucher.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\cart.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\User\\cart.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLPhieuNhap.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\Admin\\QLPhieuNhap.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\forms.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\forms.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\ThongKe.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\Admin\\ThongKe.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\models.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\models.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\TonKho.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\Admin\\TonKho.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\urls.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\DSSanPham.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\User\\DSSanPham.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\layout\\layout.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\layout\\layout.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\DoAn_ChuyenNganh\\settings.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:DoAn_ChuyenNganh\\settings.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\LienHe.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\User\\LienHe.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLTaiKhoanNhanVien.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\Admin\\QLTaiKhoanNhanVien.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\chiTietSP.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Home\\templates\\pages\\User\\chiTietSP.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\static\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:static\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 223,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "style.css",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\static\\css\\style.css",
+              "RelativeDocumentMoniker": "static\\css\\style.css",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\static\\css\\style.css",
+              "RelativeToolTip": "static\\css\\style.css",
+              "ViewState": "AgIAAE0BAAAAAAAAAAAAAFcBAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-11-23T15:54:53.239Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "models.py",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\models.py",
+              "RelativeDocumentMoniker": "Home\\models.py",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\models.py",
+              "RelativeToolTip": "Home\\models.py",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-11-24T15:15:11.45Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "views.py",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\views.py",
+              "RelativeDocumentMoniker": "Home\\views.py",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\views.py",
+              "RelativeToolTip": "Home\\views.py",
+              "ViewState": "AgIAAPgEAAAAAAAAAAAAABgFAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-11-24T15:27:19.579Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "urls.py",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\urls.py",
+              "RelativeDocumentMoniker": "Home\\urls.py",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\urls.py",
+              "RelativeToolTip": "Home\\urls.py",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAwwIEAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-11-24T15:27:22.38Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "forms.py",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\forms.py",
+              "RelativeDocumentMoniker": "Home\\forms.py",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\forms.py",
+              "RelativeToolTip": "Home\\forms.py",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAAHQAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-12-13T07:25:49.116Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "QLTinTuc.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLTinTuc.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\Admin\\QLTinTuc.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLTinTuc.html",
+              "RelativeToolTip": "Home\\templates\\pages\\Admin\\QLTinTuc.html",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAAD8AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T17:26:03.322Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "QLDanhGia.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLDanhGia.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\Admin\\QLDanhGia.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLDanhGia.html",
+              "RelativeToolTip": "Home\\templates\\pages\\Admin\\QLDanhGia.html",
+              "ViewState": "AgIAABMAAAAAAAAAAAAAACoAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T17:25:55.977Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "QLLoai.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLLoai.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\Admin\\QLLoai.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLLoai.html",
+              "RelativeToolTip": "Home\\templates\\pages\\Admin\\QLLoai.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T17:24:20.312Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Voucher.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\Voucher.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\User\\Voucher.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\Voucher.html",
+              "RelativeToolTip": "Home\\templates\\pages\\User\\Voucher.html",
+              "ViewState": "AgIAABAAAAAAAAAAAAAAAB0AAABSAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T17:21:24.442Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "QLVoucher.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLVoucher.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\Admin\\QLVoucher.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLVoucher.html",
+              "RelativeToolTip": "Home\\templates\\pages\\Admin\\QLVoucher.html",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACUAAAB6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T17:21:13.969Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "QLPhieuNhap.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLPhieuNhap.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\Admin\\QLPhieuNhap.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLPhieuNhap.html",
+              "RelativeToolTip": "Home\\templates\\pages\\Admin\\QLPhieuNhap.html",
+              "ViewState": "AgIAAIcAAAAAAAAAAAD4v5YAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T16:07:12.466Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "QLSanPham.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLSanPham.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\Admin\\QLSanPham.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLSanPham.html",
+              "RelativeToolTip": "Home\\templates\\pages\\Admin\\QLSanPham.html",
+              "ViewState": "AgIAADcAAAAAAAAAAAAAAEQAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T15:55:53.952Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "TonKho.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\TonKho.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\Admin\\TonKho.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\TonKho.html",
+              "RelativeToolTip": "Home\\templates\\pages\\Admin\\TonKho.html",
+              "ViewState": "AgIAADIAAAAAAAAAAAAAAEMAAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T15:54:58.446Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "settings.py",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\DoAn_ChuyenNganh\\settings.py",
+              "RelativeDocumentMoniker": "DoAn_ChuyenNganh\\settings.py",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\DoAn_ChuyenNganh\\settings.py",
+              "RelativeToolTip": "DoAn_ChuyenNganh\\settings.py",
+              "ViewState": "AgIAAIEAAAAAAAAAAAAAAJkAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2024-12-16T13:36:40.9Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "layout.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\layout\\layout.html",
+              "RelativeDocumentMoniker": "Home\\templates\\layout\\layout.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\layout\\layout.html",
+              "RelativeToolTip": "Home\\templates\\layout\\layout.html",
+              "ViewState": "AgIAACIAAAAAAAAAAAAAADEAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T13:27:35.629Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "LienHe.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\LienHe.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\User\\LienHe.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\LienHe.html",
+              "RelativeToolTip": "Home\\templates\\pages\\User\\LienHe.html",
+              "ViewState": "AgIAADcAAAAAAAAAAAAgwDwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T12:55:17.284Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "QLTaiKhoanNhanVien.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLTaiKhoanNhanVien.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\Admin\\QLTaiKhoanNhanVien.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\QLTaiKhoanNhanVien.html",
+              "RelativeToolTip": "Home\\templates\\pages\\Admin\\QLTaiKhoanNhanVien.html",
+              "ViewState": "AgIAAHQAAAAAAAAAAAAAAN8AAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-16T12:20:01.256Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ThongKe.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\ThongKe.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\Admin\\ThongKe.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\Admin\\ThongKe.html",
+              "RelativeToolTip": "Home\\templates\\pages\\Admin\\ThongKe.html",
+              "ViewState": "AgIAAJQAAAAAAAAAAAAAAKMAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-15T18:55:04.776Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "DSSanPham.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\DSSanPham.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\User\\DSSanPham.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\DSSanPham.html",
+              "RelativeToolTip": "Home\\templates\\pages\\User\\DSSanPham.html",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAAAEQAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-15T16:17:30.087Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "chiTietSP.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\chiTietSP.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\User\\chiTietSP.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\chiTietSP.html",
+              "RelativeToolTip": "Home\\templates\\pages\\User\\chiTietSP.html",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAAAHEAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-15T16:07:13.174Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "cart.html",
+              "DocumentMoniker": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\cart.html",
+              "RelativeDocumentMoniker": "Home\\templates\\pages\\User\\cart.html",
+              "ToolTip": "G:\\TotNghiep\\13-12-24\\DoAn_ChuyenNganh\\Home\\templates\\pages\\User\\cart.html",
+              "RelativeToolTip": "Home\\templates\\pages\\User\\cart.html",
+              "ViewState": "AgIAAC4AAAAAAAAAAAAAADoAAAByAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2024-12-15T16:04:38.084Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

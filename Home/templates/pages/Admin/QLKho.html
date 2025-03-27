@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %}Quản lý Kho{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+
+    <!-- Tiêu đề và Nút Thêm -->
+    <div class="row">
+        <div class="col-10"><h2>Danh sách Kho</h2></div>
+        <div class="col-2 d-flex justify-content-end align-items-center">
+            <!-- Nút Thêm mở modal để thêm kho mới -->
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalKho" onclick="openAddModal()">+ Thêm Kho hàng</button>
+        </div>
+    </div>
+
+    <!-- Bảng Danh sách Kho -->
+    <table class="table table-white table-hover mt-3">
+        <thead class="table-success">
+            <tr>
+                <th class="text-center" style="width: 10%;">Mã</th>
+                <th class="text-center" style="width: 20%;">Tên Kho</th>
+                <th class="text-center" style="width: 25%;">Địa Chỉ</th>
+                <th class="text-center" style="width: 15%;">Số Loại Sản Phẩm</th>
+                <th class="text-center" style="width: 15%;">Tổng Số Lượng Tồn</th>
+                <th class="text-center" style="width: 15%;">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in dskho_info %}
+            <tr>
+                <td class="text-center">{{ item.kho.MaKho }}</td>
+                <td class="text-center">{{ item.kho.TenKho }}</td>
+                <td class="text-center">{{ item.kho.DiaChi }}</td>
+                <td class="text-center">{{ item.so_loai_san_pham }}</td>
+                <td class="text-center">{{ item.tong_so_luong_ton }}</td>
+                <td class="text-center">
+                    <!-- Nút sửa kho: Mở modal và truyền dữ liệu cũ vào -->
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditKho" onclick="openEditModal({{ item.kho.MaKho }}, '{{ item.kho.TenKho }}', '{{ item.kho.DiaChi }}')">Sửa</button>
+    
+                    <!-- Nút xóa kho -->
+                    <form action="{% url 'UserMember:xoa_kho' item.kho.pk %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn" style="background-color:darkorange" onclick="return confirm('Bạn có chắc chắn muốn xóa kho này?')">Xóa</button>
+                    </form>
+    
+                    <!-- Nút xem tồn kho -->
+                    <a href="{% url 'UserMember:chi_tiet_ton_kho' item.kho.MaKho %}" class="btn btn-outline-secondary">Xem Tồn Kho</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">Không có Kho nào</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal Thêm Kho -->
+    <div class="modal fade" id="modalKho" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Thêm Kho</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formKho" method="POST" action="{% url 'UserMember:them_kho' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="TenKho">Tên Kho</label>
+                            <input type="text" class="form-control" id="TenKho" name="TenKho" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="DiaChi">Địa Chỉ</label>
+                            <input type="text" class="form-control" id="DiaChi" name="DiaChi" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-success">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Chỉnh Sửa Kho -->
+    <div class="modal fade" id="modalEditKho" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditLabel">Chỉnh Sửa Kho</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formEditKho" method="POST" action="{% url 'UserMember:sua_kho' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" id="editMaKho" name="MaKho">
+                        <div class="form-group">
+                            <label for="editTenKho">Tên Kho</label>
+                            <input type="text" class="form-control" id="editTenKho" name="TenKho" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDiaChi">Địa Chỉ</label>
+                            <input type="text" class="form-control" id="editDiaChi" name="DiaChi" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm Bootstrap và jQuery -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        // Hàm mở modal thêm kho mới
+        function openAddModal() {
+            document.getElementById('TenKho').value = '';
+            document.getElementById('DiaChi').value = '';
+        }
+
+        // Hàm mở modal sửa kho và điền dữ liệu cũ
+        function openEditModal(maKho, tenKho, diaChi) {
+            document.getElementById('editMaKho').value = maKho;
+            document.getElementById('editTenKho').value = tenKho;
+            document.getElementById('editDiaChi').value = diaChi;
+        }
+    </script>
+
+    {% endblock %}
+</body>
+</html>

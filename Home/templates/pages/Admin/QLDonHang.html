@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %} Đơn hàng {% endblock %}</title>
+    {% load static %}
+</head>
+<body>
+    {% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3"><h2>Quản lý đơn hàng</h2></div>
+            <div class="col-9 d-flex justify-content-end">
+                <div class="mb-3">
+                    <button class="btn filter-btn" style="background-color: #e5844f" data-status="all">Tất cả</button>
+                    <button class="btn filter-btn" style="background-color: #bd8c4d" data-status="cho_xac_nhan">Chờ xác nhận</button>
+                    <button class="btn filter-btn" style="background-color: #a6914c" data-status="dang_xu_ly">Đang xử lý</button>
+                    <button class="btn filter-btn" style="background-color: #84964a" data-status="dang_giao">Đang giao</button>
+                    <button class="btn filter-btn" style="background-color: #3c9945" data-status="da_hoan_thanh">Đã hoàn thành</button>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-white table-hover">
+            <thead class="table-success">
+                <tr class="text-center">
+                    <th style="width: 2%">MaDH</th>
+                    <th style="width: 10%">Ngày đặt</th>
+                    <th style="width: 10%">Ngày dự kiến</th>
+                    <th style="width: 10%">Ngày nhận</th>
+                    <th style="width: 10%">Khách hàng</th>
+                    <th style="width: 12%">Số điện thoại</th>
+                    <th style="width: 15%">Địa chỉ</th>
+                    <th style="width: 10%">Tổng tiền</th>
+                    <th style="width: 10%">Trạng thái</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="order-table">
+                {% for order in orders %}
+                <tr class="text-center" data-status="{{ order.TrangThai }}">
+                    <td>{{ order.MaDH }}</td>
+                    <td>{{ order.NgayDat|date:"d/m/Y" }}</td>
+                    <td>{{ order.NgayDuKien|date:"d/m/Y" }}</td>
+                    <td>{{ order.NgayNhan|date:"d/m/Y" }}</td>
+                    <td>{{ order.user_name }}</td>
+                    <td>{{ order.user_phone }}</td>
+                    <td>{{ order.user_address }}</td>
+                    <td>{{ order.TongTien|floatformat:3 }} đ</td>
+                    <td>{{ order.get_TrangThai_display }}</td>
+                    <td>
+                        <button class="btn btn-outline-secondary" onclick="openDetailModal('{{ order.MaDH }}')">Chi tiết</button>
+                        {% if order.TrangThai == 'cho_xac_nhan' %}
+                        <button class="btn cho-xac-nhan-btn" style="background-color: #bd8c4d" data-id="{{ order.MaDH }}">Xác nhận</button>
+                        {% elif order.TrangThai == 'dang_xu_ly' %}
+                        <button class="btn dang-xu-ly-btn" style="background-color: #a6914c" data-id="{{ order.MaDH }}">Đã xử lý</button>
+
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10" class="text-center">Không có đơn hàng nào.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Modal Bootstrap -->
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success" id="detailModalLabel">Chi tiết đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Mã đơn hàng:</strong> <span id="detailMaDH"></span></p>
+                    <p><strong>Tổng tiền:</strong> <span id="detailTongTien"></span></p>
+                    <p><strong>Trạng thái:</strong> <span id="detailTrangThai"></span></p>
+                    <h5>Danh sách sản phẩm</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tên sản phẩm</th>
+                                <th class="text-center">Giá</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-center">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detailSanPhamList">
+                            <!-- Nội dung sản phẩm sẽ được load vào đây -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Lọc đơn hàng theo trạng thái
+            $('.filter-btn').on('click', function () {
+                const status = $(this).data('status');
+                if (status === 'all') {
+                    $('#order-table tr').show();
+                } else {
+                    $('#order-table tr').hide().filter(`[data-status="${status}"]`).show();
+                }
+            });
+
+        // Xử lý khi nhấn nút "Chờ xác nhận"
+        $('.cho-xac-nhan-btn').on('click', function () {
+            const orderId = $(this).data('id');
+
+            $.ajax({
+                url: "{% url 'UserMember:update_order_status' %}",
+                method: "POST",
+                data: {
+                    order_id: orderId,
+                    new_status: 'dang_xu_ly', // Chuyển trạng thái thành "Đang xử lý"
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        location.reload(); // Reload lại để cập nhật bảng
+                    } else {
+                        alert(response.error);
+                    }
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi, vui lòng thử lại.");
+                }
+            });
+        });
+        // Xử lý khi nhấn nút "Đang xử lý"
+        $('.dang-xu-ly-btn').on('click', function () {
+            const orderId = $(this).data('id');
+
+            $.ajax({
+                url: "{% url 'UserMember:update_order_status' %}",
+                method: "POST",
+                data: {
+                    order_id: orderId,
+                    new_status: 'dang_giao',
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        location.reload(); // Reload lại để cập nhật bảng
+                    } else {
+                        alert(response.error);
+                    }
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi, vui lòng thử lại.");
+                }
+            });
+        });
+    });
+    </script>
+    <script>
+        function openDetailModal(MaDH) {
+            fetch(`/api/get_ct_donhang/${MaDH}/`)
+                .then(response => {
+                    if (!response.ok) throw new Error('API Error');
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('detailMaDH').textContent = data.MaDH;
+                    document.getElementById('detailTongTien').textContent = `${data.TongTien.toLocaleString()} VND`;
+                    document.getElementById('detailTrangThai').textContent = data.TrangThai;
+
+                    // Hiển thị danh sách sản phẩm
+                    const sanPhamList = document.getElementById('detailSanPhamList');
+                    sanPhamList.innerHTML = ''; // Xóa dữ liệu cũ
+                    data.SanPham.forEach(product => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${product.TenSP}</td>
+                            <td class="text-center">${product.Gia.toFixed(3)} VND</td>
+                            <td class="text-center">${product.SoLuong}</td>
+                            <td class="text-center">${product.ThanhTien.toFixed(3)} VND</td>
+                        `;
+                        sanPhamList.appendChild(row);
+                    });
+
+                    new bootstrap.Modal(document.getElementById('detailModal')).show();
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Không thể tải thông tin!");
+                });
+        }
+    </script>
+
+    {% endblock %}
+</body>
+</html>

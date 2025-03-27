@@ -1,0 +1,92 @@
+{% extends "layout/admin.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Thêm Sản Phẩm{% endblock %}</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-success">Thêm Sản Phẩm Mới</h2>
+    <form method="POST" enctype="multipart/form-data" class="needs-validation">
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_MaLoai" class="form-label"></label>
+                {{ form.MaLoai|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                <label for="id_TenSP" class="form-label"></label>
+                {{ form.TenSP|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_TrongLuong" class="form-label"></label>
+                {{ form.TrongLuong|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                <label for="id_DVT" class="form-label"></label>
+                {{ form.DVT|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_SoLuongHienTai" class="form-label"></label>
+                {{ form.SoLuongHienTai|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                <label for="id_GiaBan" class="form-label"></label>
+                {{ form.GiaBan|as_crispy_field }}
+            </div>
+
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_NguonGoc" class="form-label"></label>
+                {{ form.NguonGoc|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                <label for="id_HinhAnh" class="form-label"></label>
+                {{ form.HinhAnh|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_BaoQuan" class="form-label"></label>
+                {{ form.BaoQuan|as_crispy_field }}
+            </div>
+            <div class="col-md-6">
+                <label for="id_MoTa" class="form-label"></label>
+                {{ form.MoTa|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_TinhTrang" class="form-label">Tính dễ hư</label>
+                {{ form.MucDoHu|as_crispy_field }}
+            </div>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div>
+            <button type="submit" class="btn btn-success px-4">Thêm Sản Phẩm</button> &nbsp;|&nbsp;
+            <a href="{% url 'UserMember:QLSanPham' %}" class="btn btn-secondary px-4">Quay Lại</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+</body>
+</html>

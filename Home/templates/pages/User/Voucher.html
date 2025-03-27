@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Vouchers</title>
+    {% extends "layout/layout.html" %}
+    {% load static %}
+</head>
+<body>
+    {% block content %}
+    <!-- Page Header -->
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container d-flex justify-content-end">
+            <h1 class="display-3 mb-3 animated slideInDown" style="font-weight:800; font-size:72px; opacity: 0.9;">Vouchers</h1>
+        </div>
+    </div>
+    <!-- Danh sách tin tức -->
+    <div class="container-fluid py-3">
+        <div class="container">
+            <!-- Header -->
+            <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+                <h1 class="display-3 mb-3">Các Vouchers</h1>
+                <p>Cập nhật những mã khuyến mãi mới nhất từ chúng tôi tại đây.</p>
+            </div>
+
+            <!-- Vouchers -->
+            <div class="row g-4">
+                {% for vou in dsVoucher %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="card p-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <img class="img-fluid d-block mx-auto" style="width:250px; height:50px" src="{% static 'image/discount.png' %}" alt="">
+                                </div>
+                                <div class="col-9">
+                                    <h5 class="card-tittle text-decoration-none {% if vou.NgayKetThuc < today %} text-danger {% else %} text-success {% endif %}">
+                                            {{ vou.MaVoucher }} - {{ vou.TenVoucher }}
+                                        </h5>
+                                    
+                                    <strong class="me-3">{{ vou.MoTa }}</strong><br /><br />
+                                    <span class="me-3">Áp dụng từ: {{ vou.HanMucApDung| floatformat:3 }} VNĐ</span><br />
+                                    <small class="me-3">Số lượng còn: {{ vou.SoLuong }}</small>     <br />                               
+                                    <small class="me-3">{{ vou.NgayBatDau|date:"d/m/Y" }} - {{ vou.NgayKetThuc|date:"d/m/Y" }}</small>                                    
+                                </div>
+                            </div>
+                           
+                        </div>                
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Phân trang -->
+            <div class="text-center mt-3">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <!-- Trước -->
+                        {% if dsVoucher.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1"><i class="fas fa-angle-double-left text-success"></i></a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ dsVoucher.previous_page_number }}"><i class="fas fa-angle-left text-success"></i></a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link"><i class="fas fa-angle-left"></i></span>
+                        </li>
+                        {% endif %}
+
+                        <!-- Số trang -->
+                        {% for page_num in dsVoucher.paginator.page_range %}
+                        {% if page_num|add:'-3' <= dsVoucher.number <= page_num|add:'3' %}
+                        <li class="page-item {% if dsVoucher.number == page_num %}active{% endif %}">
+                            <a class="page-link {% if dsVoucher.number == page_num %}bg-success text-white{% else %}text-success{% endif %}" href="?page={{ page_num }}">{{ page_num }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                        <!-- Sau -->
+                        {% if dsVoucher.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ dsVoucher.next_page_number }}"><i class="fas fa-angle-right text-success"></i></a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ dsVoucher.paginator.num_pages }}"><i class="fas fa-angle-double-right text-success"></i></a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link"><i class="fas fa-angle-right"></i></span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

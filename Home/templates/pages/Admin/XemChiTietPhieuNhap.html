@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %}Quản lý Chi Tiết Phiếu Nhập{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+    <div class="container">
+        <h1 class="mt-4">Chi Tiết Phiếu Nhập</h1>
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4><strong>Mã Phiếu Nhập: </strong>{{ phieu_nhap.MaPhieuNhap }}</h4>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <a href="{% url 'UserMember:QLPhieuNhap' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+            </div>
+        </div>
+        <table class="table table-hover mt-3">
+            <thead>
+                <tr>
+                    <th class="text-center">Mã CT Phiếu Nhập</th>
+                    <th class="text-center">Mã Sản Phẩm</th>
+                    <th class="text-center">Tên Sản Phẩm</th>
+                    <th class="text-center">Số Lượng Nhập</th>
+                    <th class="text-center">Giá Nhập</th>
+                    <th class="text-center">Loại Sản Phẩm</th>
+                    <th class="text-center">Ngày Sản Xuất</th>
+                    <th class="text-center">Ngày Hết Hạn</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sp in chi_tiet_phieu_nhap %}
+                    <tr>
+                        <td class="text-center">{{ sp.MaCTPN }}</td>
+                        <td class="text-center">{{ sp.SanPham.MaSP }}</td>
+                        <td class="text-center">{{ sp.SanPham.TenSP }}</td>
+                        <td class="text-center">{{ sp.SoLuongNhap }}</td>
+                        <td class="text-center">{{ sp.GiaNhap|floatformat:3 }}</td>
+                        <td class="text-center">{{ sp.SanPham.MaLoai.TenLoai }}</td>
+                        <td class="text-center">{{ sp.NgaySanXuat|date:"d/m/Y" }}</td>
+                        <td class="text-center">{{ sp.NgayHetHan|date:"d/m/Y" }}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="editProduct({{ sp.MaCTPN }}, '{{ sp.SanPham.MaSP }}', '{{ sp.SanPham.TenSP }}', '{{ sp.SoLuongNhap }}', '{{ sp.GiaNhap }}', '{{ sp.SanPham.MaLoai.MaLoai }}', '{{ sp.NgaySanXuat }}', '{{ sp.NgayHetHan }}')">
+                                Sửa
+                            </button>
+                            <form action="{% url 'UserMember:xoa_chi_tiet_phieu_nhap' MaPhieuNhap=phieu_nhap.MaPhieuNhap MaCTPN=sp.MaCTPN %}" method="POST" style="display:inline-block;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm" style="background-color: darkorange" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="9" class="text-center">Không có sản phẩm nào</td>
+                    </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+
+        <!-- Nút Thêm Sản Phẩm -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalSanPham" onclick="resetModal()">+ Thêm Sản Phẩm</button>
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <a href="{% url 'UserMember:in_phieu_nhap' phieu_nhap.MaPhieuNhap %}" class="btn btn-primary">
+                    <i class="fas fa-print"></i> In Phiếu Nhập
+                </a>
+                
+            </div>
+        </div>
+        <!-- Modal Thêm/Chỉnh Sửa Sản Phẩm -->
+        <div class="modal fade" id="modalSanPham" tabindex="-1" aria-labelledby="modalSanPhamLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form id="formSanPham" method="POST" action="{% url 'UserMember:them_chi_tiet_phieu_nhap' MaPhieuNhap=phieu_nhap.MaPhieuNhap %}">
+                    {% csrf_token %}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalSanPhamLabel">Thêm Sản Phẩm</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="LoaiSanPham" class="form-label">Loại sản phẩm</label>
+                                <select class="form-control" id="LoaiSanPham" name="LoaiSanPham" required onchange="filterSanPhamByLoai()">
+                                    <option value="">Chọn loại sản phẩm</option>
+                                    {% for loai in loai_san_pham %}
+                                        <option value="{{ loai.MaLoai }}">{{ loai.TenLoai }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="SanPham" class="form-label">Sản phẩm</label>
+                                <select class="form-control" id="SanPham" name="SanPham" required>
+                                    <option value="">Chọn sản phẩm</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="SoLuongNhap" class="form-label">Số lượng nhập</label>
+                                <input type="number" class="form-control" id="SoLuongNhap" name="SoLuongNhap" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="GiaNhap" class="form-label">Giá nhập</label>
+                                <input type="number" class="form-control" id="GiaNhap" name="GiaNhap" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="NgaySanXuat" class="form-label">Ngày sản xuất</label>
+                                <input type="date" class="form-control" id="NgaySanXuat" name="NgaySanXuat" required onchange="validateDates()">
+                            </div>
+                            <div class="mb-3">
+                                <label for="NgayHetHan" class="form-label">Ngày hết hạn</label>
+                                <input type="date" class="form-control" id="NgayHetHan" name="NgayHetHan" required onchange="validateDates()">
+                                <!-- Vùng hiển thị lỗi -->
+                                <div id="dateError" style="color: red; display: none; margin-top: 5px;">
+                                    Ngày hết hạn không được nhỏ hơn ngày sản xuất.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+        <script>
+            const isCompleted = "{{ phieu_nhap.TrangThai }}" === "completed";
+            if (isCompleted) {
+                document.querySelectorAll('.btn-success, .btn-warning btn-sm, .btn-sm').forEach(btn => {
+                    btn.disabled = true; // Disable buttons
+                });
+            }
+            function filterSanPhamByLoai() {
+                const loai_id = document.getElementById("LoaiSanPham").value;
+                if (loai_id) {
+                    fetch(`/get_san_pham_by_loai/${loai_id}/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const sanPhamSelect = document.getElementById("SanPham");
+                            sanPhamSelect.innerHTML = '<option value="">Chọn sản phẩm</option>';
+                            data.san_pham.forEach(sp => {
+                                sanPhamSelect.innerHTML += `<option value="${sp.MaSP}">${sp.TenSP}</option>`;
+                            });
+                        });
+                } else {
+                    document.getElementById("SanPham").innerHTML = '<option value="">Chọn sản phẩm</option>';
+                }
+            }
+
+            function editProduct(MaCTPN, MaSP, TenSP, SoLuongNhap, GiaNhap, MaLoai, NgaySanXuat, NgayHetHan) {
+                // Cập nhật tiêu đề modal và các trường input
+                document.getElementById("modalSanPhamLabel").innerText = "Chỉnh Sửa Sản Phẩm";
+                document.getElementById("LoaiSanPham").value = MaLoai;
+        
+                // Lọc sản phẩm theo loại đã chọn
+                filterSanPhamByLoai();
+        
+                // Đảm bảo sau khi lọc sản phẩm, ta sẽ cập nhật các trường còn lại
+                setTimeout(function() {
+                    document.getElementById("SanPham").value = MaSP;
+                    document.getElementById("SoLuongNhap").value = SoLuongNhap;
+                    document.getElementById("GiaNhap").value = GiaNhap;
+                    document.getElementById("NgaySanXuat").value = NgaySanXuat;
+                    document.getElementById("NgayHetHan").value = NgayHetHan;
+        
+                    // Cập nhật action của form với URL động
+                    const form = document.getElementById("formSanPham");
+                    // Lấy MaPhieuNhap từ context hoặc từ HTML nếu có
+                    const maPhieuNhap = '{{ phieu_nhap.MaPhieuNhap }}'; 
+                    form.action = "/sua_chi_tiet_phieu_nhap/" + maPhieuNhap + "/" + MaCTPN + "/";
+        
+                    // Mở modal
+                    var modal = new bootstrap.Modal(document.getElementById('modalSanPham'));
+                    modal.show();
+                }, 500);
+            }
+
+            function resetModal() {
+                document.getElementById("modalSanPhamLabel").innerText = "Thêm Sản Phẩm";
+                document.getElementById("formSanPham").reset();
+                const form = document.getElementById("formSanPham");
+                form.action = "{% url 'UserMember:them_chi_tiet_phieu_nhap' MaPhieuNhap=phieu_nhap.MaPhieuNhap %}";
+            }
+            function validateDates() {
+                const ngaySanXuat = document.getElementById("NgaySanXuat").value;
+                const ngayHetHan = document.getElementById("NgayHetHan").value;
+                const errorElement = document.getElementById("dateError");
+            
+                if (ngaySanXuat && ngayHetHan) {
+                    if (new Date(ngayHetHan) < new Date(ngaySanXuat)) {
+                        // Hiển thị lỗi
+                        errorElement.style.display = "block";
+                    } else {
+                        // Ẩn lỗi
+                        errorElement.style.display = "none";
+                    }
+                }
+            }
+            
+        </script>
+    </div>
+    {% endblock %}
+</body>
+</html>

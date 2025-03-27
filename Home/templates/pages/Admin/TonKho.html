@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %}Quản lý Tồn Kho{% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+
+    <!-- Tiêu đề và Nút Thêm -->
+    <div class="row">
+        <div class="col-10">
+            <h2>Danh sách Tồn Kho - {{ kho.TenKho }}</h2>
+        </div>
+        <div class="col-2 d-flex justify-content-end align-items-center">
+            <!-- Nút Thêm mở modal để thêm tồn kho mới -->
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTonKho" onclick="openAddTonKhoModal()">Thêm</button>
+        </div>
+    </div>
+    <div class="text-end mb-3">
+        <a href="{% url 'UserMember:xuat_excel_tonkho' %}" class="btn btn-primary">
+            <i class="fas fa-file-excel"></i> Xuất Excel
+        </a>
+        
+    </div>
+    <!-- Nút Quay lại -->
+    <div class="row mt-3">
+        <div class="col-8">
+            <a href="{% url 'UserMember:QLKho' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+        <div class="col-4">
+            <form method="GET" action="">
+                <div class="input-group mb-3">
+                    <input type="text" name="q" class="form-control" placeholder="Nhập tên sản phẩm..." value="{{ keyword|default:'' }}">
+                    <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i> Tìm kiếm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bảng Danh sách Tồn Kho -->
+    <table class="table table-white table-hover mt-3">
+        <thead>
+            <tr>
+                <th class="text-center" style="width: 10%; color: green">Mã Sản Phẩm</th>
+                <th class="text-center" style="width: 25%; color: green">Tên Sản Phẩm</th>
+                <th class="text-center" style="width: 15%; color: green">Số Lượng Tồn</th>
+                <th class="text-center" style="width: 15%; color: green">Ngày Hết Hạn</th>
+                <th class="text-center" style="width: 15%; color: green">Ngày Nhập Kho</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ton_kho in ton_kho_list %}
+            <tr>
+                <td class="text-center">{{ ton_kho.SanPham.MaSP }}</td>
+                <td class="text-center">{{ ton_kho.SanPham.TenSP }}</td>
+                <td class="text-center">{{ ton_kho.SoLuongTon }}</td>
+                <td class="text-center">{{ ton_kho.NgayHetHan |date:"d/m/Y"}}</td>
+                <td class="text-center">{{ ton_kho.NgayNhapKho |date:"d/m/Y"}}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">Không tìm thấy sản phẩm nào.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal Thêm Tồn Kho -->
+    <div class="modal fade" id="modalTonKho" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Thêm Tồn Kho</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="formTonKho" method="POST" action="{% url 'UserMember:them_ton_kho' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="SanPham">Sản Phẩm</label>
+                            <select class="form-control" id="SanPham" name="SanPham" required>
+                                {% for sanpham in dssp %}
+                                <option value="{{ sanpham.id }}">{{ sanpham.TenSanPham }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Hidden field for Kho (pre-set the current warehouse ID) -->
+                        <input type="hidden" id="Kho" name="Kho" value="{{ kho.id }}">
+
+                        <div class="form-group">
+                            <label for="SoLuongTon">Số Lượng Tồn</label>
+                            <input type="number" class="form-control" id="SoLuongTon" name="SoLuongTon" required min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="NgayHetHan">Ngày Hết Hạn</label>
+                            <input type="date" class="form-control" id="NgayHetHan" name="NgayHetHan">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm Bootstrap và jQuery -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        // Hàm mở modal thêm tồn kho mới
+        function openAddTonKhoModal() {
+            document.getElementById('SanPham').value = '';
+            document.getElementById('SoLuongTon').value = '';
+            document.getElementById('NgayHetHan').value = '';
+        }
+    </script>
+    
+    {% endblock %}
+</body>
+</html>

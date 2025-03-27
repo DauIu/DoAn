@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %} Quản lý phiếu nhập {% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+    <div class="row">
+        <div class="col-10"><h2>Danh sách phiếu nhập</h2></div>
+        <div class="col-2 d-flex justify-content-end align-items-center">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalPhieuNhap" onclick="openAddModal()">+ Thêm Phiếu nhập</button>
+        </div>
+    </div>
+
+    <table class="table table-white table-hover mt-3">
+        <thead class="table-success">
+            <tr>
+                <th class="text-center" style="width: 5%;">Mã PN</th>
+                <th class="text-center" style="width: 15%;">Nhà Cung Cấp</th>
+                <th class="text-center" style="width: 10%;">Ngày Nhập</th>
+                <th class="text-center" style="width: 10%;">Tổng Số Lượng</th>
+                <th class="text-center" style="width: 10%;">Tổng Tiền</th>
+                <th class="text-center" style="width: 10%;">Trạng Thái</th>
+                <th class="text-center" style="width: 20%;">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pn in dsPhieuNhap %}
+            <tr>
+                <th scope="row" class="text-center">{{ pn.MaPhieuNhap }}</th>
+                <td class="text-center">{{ pn.NhaCungCap.TenNCC }}</td>
+                <td class="text-center">{{ pn.NgayNhap|date:"d/m/Y" }}</td>
+                <td class="text-center">{{ pn.TongSoLuong }}</td>
+                <td class="text-center">{{ pn.TongTienNhap|floatformat:3 }}</td>
+                <td class="text-center">
+                    <select 
+                        onchange="updateStatus('{{ pn.MaPhieuNhap }}', this.value)" 
+                        {% if pn.TrangThai == 'completed' %}disabled{% endif %}
+                    >
+                        <option value="pending" {% if pn.TrangThai == 'pending' %}selected{% endif %}>Chờ xử lý</option>
+                        <option value="completed" {% if pn.TrangThai == 'completed' %}selected{% endif %}>Hoàn thành</option>
+                        <option value="cancelled" {% if pn.TrangThai == 'cancelled' %}selected{% endif %}>Đã hủy</option>
+                    </select>
+
+                </td>
+                <td class="text-center">
+                    <a class="btn btn-outline-secondary"
+                       href="{% url 'UserMember:XemChiTietPhieuNhap' pn.MaPhieuNhap %}">Chi tiết</a>
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalPhieuNhap"
+                            onclick="openEditModal('{{ pn.MaPhieuNhap }}', '{{ pn.NhaCungCap.MaNCC }}', '{{ pn.NgayNhap }}', '{{ pn.TongSoLuong }}', '{{ pn.TongTienNhap }}', '{{ pn.TrangThai }}')">
+                        Sửa
+                    </button>
+                    <a class="btn" style="background-color:darkorange" 
+                       href="{% url 'UserMember:xoa_phieu_nhap' pn.MaPhieuNhap %}"
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa phiếu nhập này không?');">Xóa</a>
+
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">Không có phiếu nhập nào</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal Popup -->
+    <div class="modal fade" id="modalPhieuNhap" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Thêm phiếu nhập</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formPhieuNhap" method="POST" action="{% url 'UserMember:them_phieu_nhap' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="MaPhieuNhap">Mã Phiếu Nhập</label>
+                            <input type="text" class="form-control" id="MaPhieuNhap" name="MaPhieuNhap" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="NhaCungCap">Nhà Cung Cấp</label>
+                            <select class="form-control" id="NhaCungCap" name="NhaCungCap" required>
+                                <option value="" selected disabled>Chọn Nhà Cung Cấp</option>
+                                {% for ncc in nha_cung_cap_list %}
+                                    <option value="{{ ncc.MaNCC }}">{{ ncc.TenNCC }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="NgayNhap">Ngày Nhập</label>
+                            <input type="date" class="form-control" id="NgayNhap" name="NgayNhap" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="TongSoLuong">Tổng Số Lượng:</label>
+                            <input type="text" id="TongSoLuong" name="TongSoLuong" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="TongTienNhap">Tổng Tiền Nhập:</label>
+                            <input type="text" id="TongTienNhap" name="TongTienNhap" class="form-control" readonly>
+                        </div>
+                        <div class="form-group" id="TrangThaiGroup" style="display: none;">
+                            <label for="TrangThai">Trạng Thái</label>
+                            <select class="form-control" id="TrangThai" name="TrangThai" required>
+                                {% for value, label in phieu_nhap_form.fields.TrangThai.choices %}
+                                    <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-success">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalChonKho" tabindex="-1" aria-labelledby="modalChonKhoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalChonKhoLabel">Chọn Kho để nhập hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="Kho">Chọn Kho:</label>
+                    <select class="form-control" id="Kho">
+                        {% if dskho_info %}
+                            {% for kho in dskho_info %}
+                                <option value="{{ kho.MaKho }}">
+                                    {{ kho.TenKho }} 
+                                </option>
+                            {% endfor %}
+                        {% else %}
+                            <option disabled>Không có kho nào</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-success" id="confirmKhoSelection">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <script>
+        function openAddModal() {
+            document.getElementById('modalLabel').innerText = 'Thêm phiếu nhập';
+            document.getElementById('MaPhieuNhap').value = ''; 
+            document.getElementById('NhaCungCap').selectedIndex = 0;
+            document.getElementById('NgayNhap').value = '';
+            document.getElementById('TongSoLuong').value = '0';
+            document.getElementById('TongTienNhap').value = '0';
+            document.getElementById('TrangThai').value = 'pending';
+            document.getElementById('TrangThaiGroup').style.display = 'block'; // Hiển thị lại Trạng Thái khi thêm
+            document.getElementById('formPhieuNhap').action = "{% url 'UserMember:them_phieu_nhap' %}";
+        }
+    
+        function openEditModal(MaPhieuNhap, MaNCC, NgayNhap, TongSoLuong, TongTienNhap, TrangThai) {
+            document.getElementById('modalLabel').innerText = 'Sửa phiếu nhập';
+            document.getElementById('MaPhieuNhap').value = MaPhieuNhap;
+            document.getElementById('MaPhieuNhap').setAttribute('readonly', 'readonly');
+            document.getElementById('NhaCungCap').value = MaNCC;
+            document.getElementById('NgayNhap').value = formatDate(NgayNhap);
+            document.getElementById('TongSoLuong').value = TongSoLuong;
+            document.getElementById('TongTienNhap').value = TongTienNhap;
+            
+            // Ẩn Trạng Thái khi sửa
+            document.getElementById('TrangThaiGroup').style.display = 'none';
+            
+            var actionUrl = "{% url 'UserMember:sua_phieu_nhap' 'MaPhieuNhapPlaceholder' %}".replace('MaPhieuNhapPlaceholder', MaPhieuNhap);
+            document.getElementById('formPhieuNhap').action = actionUrl;
+        }
+    
+        function formatDate(dateString) {
+            var date = new Date(dateString);
+            var day = ("0" + date.getDate()).slice(-2);
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var year = date.getFullYear();
+            return year + "-" + month + "-" + day;
+        }
+    </script>
+    <script>
+        // Truyền dữ liệu kho vào JavaScript
+        var khoData = {{ dskho_info|safe }};
+        
+        function updateStatus(MaPhieuNhap, newStatus) {
+            if (newStatus === 'completed') {
+                $('#modalChonKho').modal('show');  // Hiển thị modal chọn kho
+        
+                const khoSelect = document.getElementById('Kho');
+                if (khoSelect) {
+                    khoSelect.innerHTML = "";  // Xóa các tùy chọn cũ trong dropdown
+        
+                    // Kiểm tra nếu có kho
+                    if (khoData.length > 0) {
+                        khoData.forEach(function(kho) {
+                            var option = document.createElement("option");
+                            option.value = kho.MaKho;
+                            option.text = kho.TenKho;
+                            khoSelect.appendChild(option);
+                        });
+                    } else {
+                        var option = document.createElement("option");
+                        option.disabled = true;
+                        option.text = "Không có kho nào";
+                        khoSelect.appendChild(option);
+                    }
+                }
+        
+                // Xử lý sự kiện xác nhận chọn kho
+                document.getElementById('confirmKhoSelection').onclick = function() {
+                    var khoId = document.getElementById('Kho').value;  // Lấy kho đã chọn từ dropdown
+                    fetch("{% url 'UserMember:update_status' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({
+                            MaPhieuNhap: MaPhieuNhap,
+                            TrangThai: newStatus,
+                            Kho: khoId 
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Trạng thái phiếu nhập đã được cập nhật thành công.');
+        
+                            // Đóng modal chọn kho
+                            $('#modalChonKho').modal('hide');
+        
+                            // Ẩn dropdown trạng thái nếu cần
+                            if (data.hide_status) {
+                                const statusDropdown = document.querySelector(
+                                    `tr[data-phieu-nhap="${MaPhieuNhap}"] select`
+                                );
+                                if (statusDropdown) {
+                                    statusDropdown.style.display = 'none';
+                                }
+                            }
+        
+                            // Reload lại trang để cập nhật trạng thái trong giao diện
+                            location.reload();
+                        } else {
+                            alert('Lỗi khi cập nhật trạng thái: ' + data.message);
+                        }
+                    });
+                };
+            } else {
+                fetch("{% url 'UserMember:update_status' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        MaPhieuNhap: MaPhieuNhap,
+                        TrangThai: newStatus
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Trạng thái phiếu nhập đã được cập nhật.');
+        
+                        // Ẩn dropdown trạng thái nếu cần
+                        if (data.hide_status) {
+                            const statusDropdown = document.querySelector(
+                                `tr[data-phieu-nhap="${MaPhieuNhap}"] select`
+                            );
+                            if (statusDropdown) {
+                                statusDropdown.style.display = 'none';
+                            }
+                        }
+        
+                        // Reload lại trang để cập nhật trạng thái trong giao diện
+                        location.reload();
+                    } else {
+                        alert('Lỗi khi cập nhật trạng thái: ' + data.message);
+                    }
+                });
+            }
+        }
+        
+        
+        
+        
+    </script>
+
+    {% endblock %}
+</body>
+</html>

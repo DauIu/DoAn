@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/layout.html" %}
+    <title>{% block title %} Giới thiệu {% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+    {% load static %}
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container d-flex justify-content-end">
+            <span class="display-3 mb-3 animated slideInDown" style="font-weight:800; font-size:72px;"> &nbsp; Giới thiệu &nbsp;  </span>
+        </div>
+    </div>
+
+    <!-- Giới thiệu -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="about-img position-relative overflow-hidden p-5 pe-0">
+                        <img class="img-fluid w-100" src="{% static 'image/gt-1.jpg' %}">
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <h1 class="display-5 mb-4">Có thể bạn đã biết?</h1>
+                    <p class="mb-4">
+                        Trái cây sạch là loại trái cây được sản xuất, chăm sóc và bảo quản theo quy trình tự nhiên,
+                        an toàn và không sử dụng hóa chất độc hại như thuốc trừ sâu, chất bảo quản hay thuốc kích
+                        thích tăng trưởng. Hiện nay, nhu cầu về trái cây sạch ngày càng tăng cao vì người tiêu dùng
+                        quan tâm hơn đến sức khỏe và mong muốn sử dụng những sản phẩm lành mạnh, an toàn. Đặc biệt,
+                        với tình trạng ô nhiễm môi trường và những vấn đề vệ sinh thực phẩm phổ biến hiện nay, trái
+                        cây sạch trở thành một phần thiết yếu của chế độ ăn uống lành mạnh.
+                    </p>
+                    <p class="mb-4">
+                        Trái cây sạch không chỉ là sản phẩm an toàn về mặt hóa học, mà còn có giá trị dinh dưỡng cao
+                        hơn, hương vị tự nhiên hơn so với các loại trái cây không đảm bảo chất lượng. Để đạt tiêu chuẩn
+                        trái cây sạch, quy trình trồng trọt, chăm sóc và bảo quản thường phải tuân thủ theo các quy định
+                        nghiêm ngặt:
+                    </p>
+                    <p><i class="fa fa-check text-success me-3"></i>Không hóa chất độc hại</p>
+                    <p><i class="fa fa-check text-success me-3"></i>Quy trình canh tác nghiêm ngặt</p>
+                    <p><i class="fa fa-check text-success me-3"></i>Giá trị dinh dưỡng cao</p>
+                    <p><i class="fa fa-check text-success me-3"></i>Nguồn gốc và kiểm định rõ ràng</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <!-- Văn bản nằm bên trái -->
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                    <h1 class="display-5 mb-4">Thương hiệu trái cây sạch <span class="text-success"> - FreshFruit -</span></h1>
+                    <p class="mb-4">
+                        FreshFruit là một thương hiệu nổi bật trong lĩnh vực cung cấp trái cây sạch và trái cây nhập khẩu chất lượng cao.
+                        Với sứ mệnh mang đến cho người tiêu dùng những sản phẩm an toàn, FreshFruit cam kết không sử dụng chất bảo quản, 
+                        chất kích thích tăng trưởng hoặc thuốc trừ sâu hóa học trong quá trình canh tác. Ngoài ra, FreshFruit cũng là đơn 
+                        vị nhập khẩu trái cây uy tín từ các quốc gia nổi tiếng về nông nghiệp sạch như Úc, Mỹ, và Nhật Bản, đảm bảo các
+                        tiêu chuẩn chất lượng khắt khe. FreshFruit không chỉ là nơi bán trái cây sạch, mà còn là một lựa chọn đáng tin cậy
+                        cho những ai quan tâm đến sức khỏe và chất lượng sống.
+                    </p>                    
+                </div>
+                <!-- Hình ảnh nằm bên phải -->
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="about-img position-relative overflow-hidden p-5 pe-0">
+                        <img class="img-fluid w-100" src="{% static 'image/gt-2.jpg' %}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Chứng chỉ-->
+    <div class="container-fluid bg-white bg-icon my-2 py-2">
+        <div class="container">
+            <div class="section-header text-center mx-auto mb-3 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                <h1 class="display-5 mb-3">Các chứng chỉ chất lượng của FreshFruit</h1>
+                <p>
+                    Chúng tôi cam kết có đầy đủ các chứng chỉ sau
+                </p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="bg-white text-center h-100 p-4 p-xl-5">
+                        <img class="img-fluid mb-4" src="{% static 'image/chungchi-1.png' %}" alt="">
+                        <h4 class="mb-3">Chứng nhận GlobalGAP</h4>
+                        <p class="mb-4">
+                            Đảm bảo sản phẩm đạt chuẩn quốc tế về an toàn thực phẩm, bảo vệ sức khỏe người tiêu dùng 
+                            và giảm thiểu tác động đến môi trường.
+                        </p>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="bg-white text-center h-100 p-4 p-xl-5">
+                        <img class="img-fluid mb-4" src="{% static 'image/chungchi-2.jpg' %}" alt="">
+                        <h4 class="mb-3">Chứng nhận Organic</h4>
+                        <p class="mb-4">
+                           Đảm bảo trái cây không chứa hóa chất độc hại và được sản xuất theo quy trình tự nhiên.
+                        </p>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="bg-white text-center h-100 p-4 p-xl-5">
+                        <img class="img-fluid mb-4" src="{% static 'image/chungchi-3.png' %}" alt="">
+                        <h4 class="mb-3">Chứng nhận USDA Organic</h4>
+                        <p class="mb-4">
+                           Được cấp bởi Bộ Nông nghiệp Hoa Kỳ, chỉ dành cho các sản phẩm nông sản đạt tiêu chuẩn organic quốc tế.
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+</body>
+</html>

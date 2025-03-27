@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/layout.html" %}
+    <title>{% block title %} Đăng ký {% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+    {% load static %}
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container d-flex justify-content-end">
+            <span class="display-3 mb-3 animated slideInDown" style="font-weight:800; font-size:72px;"> &nbsp; Đăng ký &nbsp;  </span>
+        </div>
+    </div>
+
+    <section class="gradient-custom">
+        <div class="container py-2">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-7">
+                    <h2 class="text-success text-uppercase">Đăng ký tại đây</h2>
+                    <form method="post" action="{% url 'UserMember:DangKy' %}">
+                        {% csrf_token %}
+
+                        <!-- Username field -->
+                        <div class="form-floating mb-3">
+                            <input type="text" name="username" class="form-control" id="username" placeholder=" " required>
+                            <label for="username">Tên đăng nhập</label>
+                            {% if form.username.errors %}
+                            <div class="text-danger">{{ form.username.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Email field -->
+                        <div class="form-floating mb-3">
+                            <input type="email" name="email" class="form-control" id="email" placeholder=" " required>
+                            <label for="email">Email</label>
+                            {% if form.email.errors %}
+                            <div class="text-danger">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Phone field -->
+                        <div class="form-floating mb-3">
+                            <input type="text" name="phone" class="form-control" id="phone" placeholder=" " required>
+                            <label for="phone">Số điện thoại</label>
+                            {% if form.phone.errors %}
+                            <div class="text-danger">{{ form.phone.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Full Name field -->
+                        <div class="form-floating mb-3">
+                            <input type="text" name="full_name" class="form-control" id="full_name" placeholder=" " required>
+                            <label for="full_name">Họ và tên</label>
+                            {% if form.full_name.errors %}
+                            <div class="text-danger">{{ form.full_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- tên đường -->
+                        <div class="form-floating mb-3">
+                            <input type="text" name="street" class="form-control" id="street" placeholder=" " required>
+                            <label for="street">Số nhà và tên Đường</label>
+                            {% if form.street.errors %}
+                            <div class="text-danger">{{ form.street.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Address fields (City, District, Ward) in one row -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="city" class="form-label">Thành phố</label>
+                                <select class="form-select" id="city" name="city" required onchange="filterCity()">
+                                    <option value="">Chọn Thành phố</option>
+                                    {% for ct in city_lst %}
+                                    <option value="{{ ct.MaTP }}">{{ ct.TenTP }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="district" class="form-label">Quận/Huyện</label>
+                                <select class="form-select" id="district" name="district" required onchange="filterDistrict()">
+                                    <option value="">Chọn Quận/Huyện</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="ward" class="form-label">Phường/Xã</label>
+                                <select class="form-select" id="ward" name="ward" required>
+                                    <option value="">Chọn Phường/Xã</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Password fields -->
+                        <div class="form-floating mb-3">
+                            <input type="password" name="password1" class="form-control" id="password1" placeholder=" " required>
+                            <label for="password1">Mật khẩu</label>
+                            {% if form.password1.errors %}
+                            <div class="text-danger">{{ form.password1.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="password" name="password2" class="form-control" id="password2" placeholder=" " required>
+                            <label for="password2">Nhập lại mật khẩu</label>
+                            {% if form.password2.errors.errors %}
+                            <div class="text-danger">{{ form.password2.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        {% if error %}
+                        <p class="text-danger">{{ error }}</p>
+                        {% endif %}
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn bg-ombre rounded-1 text-white btn-block mb-4">Đăng ký</button>
+                        </div>
+                    </form>
+                    <!-- Register buttons -->
+                    <div class="text-center">                       
+                        <p>Đăng ký tài khoản bằng:</p>
+                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                            <i class="fab fa-facebook-f text-success"></i>
+                        </button>
+
+                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                            <i class="fab fa-google text-success"></i>
+                        </button>
+
+                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                            <i class="fab fa-twitter text-success"></i>
+                        </button>
+
+                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                            <i class="fab fa-github text-success"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script>      
+        function filterCity() {
+            var cityId = document.getElementById("city").value;
+            if (!cityId) {
+                document.getElementById("district").innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+                document.getElementById("ward").innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                return;  // Không gửi AJAX nếu cityId rỗng
+            }
+            fetch(`/get_quan_by_thanh_pho/${cityId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    var districtSelect = document.getElementById("district");
+                    districtSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+                    data.districts.forEach(district => {
+                        var option = document.createElement("option");
+                        option.value = district.id;
+                        option.text = district.name;
+                        districtSelect.appendChild(option);
+                    });
+
+                    // Xóa danh sách ward khi city thay đổi
+                    document.getElementById("ward").innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                });
+        }
+
+        function filterDistrict() {
+            var districtId = document.getElementById("district").value;
+            if (!districtId) {
+                document.getElementById("ward").innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                return;  // Không gửi AJAX nếu districtId rỗng
+            }
+            fetch(`/get_phuong_by_quan/${districtId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    var wardSelect = document.getElementById("ward");
+                    wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                    data.wards.forEach(ward => {
+                        var option = document.createElement("option");
+                        option.value = ward.id;
+                        option.text = ward.name;
+                        wardSelect.appendChild(option);
+                    });
+                });
+        }
+    </script>
+
+    {% endblock %}
+</body>
+</html>

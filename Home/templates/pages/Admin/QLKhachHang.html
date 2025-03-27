@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %} Quản lý Khách hàng {% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+
+    <div class="row">
+        <div class="col-12">
+            <h2>Danh sách Khách hàng</h2>
+        </div>
+    </div>
+
+    <table class="table table-hover mt-3">
+        <thead class="table-success">
+            <tr>
+                <th class="text-center" style="width: 5%;">STT</th>
+                <th class="text-center" style="width: 10%;">Tên Tài khoản</th>
+                <th class="text-center" style="width: 15%;">Tên khách hàng</th>
+                <th class="text-center" style="width: 20%;">Email</th>
+                <th class="text-center" style="width: 15%;">Số điện thoại</th>
+                <th class="text-center" style="width: 20%;">Địa chỉ</th>
+                <th class="text-center" style="width: 20%;">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in dsKhachHang %}
+            {% if not user.is_admin %} <!-- Bỏ qua tài khoản admin -->
+    
+            <tr>
+                <th scope="row" class="text-center">{{ forloop.counter }}</th>
+                <td class="text-center">{{ user.username }}</td>
+                <td class="text-center">{{ user.full_name }}</td>
+                <td class="text-center">{{ user.email }}</td>
+                <td class="text-center">{{ user.phone }}</td>
+                <td class="text-center">
+                    {{ user.street }},
+                    {% if user.ward %}{{ user.ward.TenPhuong }}, {% endif %}
+                    {% if user.district %}{{ user.district.TenQuan }}, {% endif %}
+                    {% if user.city %}{{ user.city.TenTP }}{% endif %}
+                </td>
+                <td class="text-center">
+                    <!-- Nút Sửa -->
+                    <button 
+                        class="btn btn-warning btn-sm" 
+                        onclick="openEditModal(
+                            {{ user.id }},
+                            '{{ user.username }}',
+                            '{{ user.full_name }}',
+                            '{{ user.email }}',
+                            '{{ user.phone }}',
+                            '{{ user.street|escapejs }}',
+                            {% if user.city %}'{{ user.city.MaTP }}'{% else %}null{% endif %},
+                            {% if user.district %}'{{ user.district.MaQuan }}'{% else %}null{% endif %},
+                            {% if user.ward %}'{{ user.ward.MaPhuong }}'{% else %}null{% endif %}
+                        )">Sửa</button>
+
+                    <!-- Nút Xem -->
+                    <a class="btn btn-info btn-sm" href="{% url 'UserMember:danhsachdonhang_khachhang' user.id %}">
+                        Xem Đơn Hàng
+                    </a> 
+                </td>
+            </tr>
+            {% endif %}
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">Không có tài khoản khách hàng nào</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal Popup for Edit Customer Account -->
+    <div class="modal fade" id="modalSua" tabindex="-1" aria-labelledby="modalSuaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalSuaLabel">Sửa Tài Khoản</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" method="POST" action="">
+                        {% csrf_token %}
+                        <input type="hidden" id="userId" name="userId">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên Tài khoản</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên khách hàng</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="street">Địa Chỉ (Số nhà, đường)</label>
+                            <input type="text" class="form-control" id="street" name="street" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="city">Thành Phố</label>
+                                <select class="form-select" id="city" name="city" required onchange="filterCity()">
+                                    <option value="">Chọn Thành phố</option>
+                                    {% for ct in city_lst %}
+                                    <option value="{{ ct.MaTP }}">{{ ct.TenTP }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="district">Quận/Huyện</label>
+                                <select class="form-select" id="district" name="district" required onchange="filterDistrict()">
+                                    <option value="">Chọn Quận/Huyện</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="ward">Phường/Xã</label>
+                                <select class="form-select" id="ward" name="ward" required>
+                                    <option value="">Chọn Phường/Xã</option>
+                                </select>
+                            </div>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mở modal và điền thông tin vào form
+        function openEditModal(id, username, full_name, email, phone, street, city, district, ward) {
+            // Điền các giá trị vào form
+            document.getElementById('userId').value = id;
+            document.getElementById('username').value = username;
+            document.getElementById('full_name').value = full_name;
+            document.getElementById('email').value = email;
+            document.getElementById('phone').value = phone;
+            document.getElementById('street').value = street || '';
+        
+            // Xử lý city
+            if (city) {
+                document.getElementById('city').value = city;
+                filterCity(city, district, ward);
+            } else {
+                document.getElementById('city').innerHTML = '<option value="">Chọn Thành Phố</option>'
+                document.getElementById('district').innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+                document.getElementById('ward').innerHTML = '<option value="">Chọn Phường/Xã</option>';
+            }
+        
+            // Thiết lập action cho form
+            const form = document.getElementById('editForm');
+            form.action = "{% url 'UserMember:sua_khachhang' 0 %}".replace('0', id);
+        
+            // Hiển thị modal
+            const modal = new bootstrap.Modal(document.getElementById('modalSua'));
+            modal.show();
+        }
+        
+    </script>
+    <script>
+        function filterCity(selectedCity, selectedDistrict = null, selectedWard = null) {
+            const cityId = selectedCity || document.getElementById("city").value;
+        
+            if (!cityId) {
+                document.getElementById("district").innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+                document.getElementById("ward").innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                return;
+            }
+        
+            fetch(`/get_quan_by_thanh_pho/${cityId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    const districtSelect = document.getElementById("district");
+                    districtSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+                    data.districts.forEach(district => {
+                        const option = document.createElement("option");
+                        option.value = district.id;
+                        option.textContent = district.name;
+                        districtSelect.appendChild(option);
+                    });
+        
+                    if (selectedDistrict) {
+                        districtSelect.value = selectedDistrict;
+                        filterDistrict(selectedDistrict, selectedWard);
+                    } else {
+                        document.getElementById("ward").innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                    }
+                })
+                .catch(error => console.error("Error fetching districts:", error));
+        }
+        
+        
+        function filterDistrict(selectedDistrict, selectedWard = null) {
+            const districtId = selectedDistrict || document.getElementById("district").value;
+        
+            if (!districtId) {
+                document.getElementById("ward").innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                return;
+            }
+        
+            fetch(`/get_phuong_by_quan/${districtId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    const wardSelect = document.getElementById("ward");
+                    wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+                    data.wards.forEach(ward => {
+                        const option = document.createElement("option");
+                        option.value = ward.id;
+                        option.textContent = ward.name;
+                        wardSelect.appendChild(option);
+                    });
+        
+                    if (selectedWard) {
+                        wardSelect.value = selectedWard;
+                    }
+                })
+                .catch(error => console.error("Error fetching wards:", error));
+        }
+        
+    </script>
+
+    {% endblock %}
+</body>
+</html>

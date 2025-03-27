@@ -1,0 +1,340 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/layout.html" %}
+    <title>{% block title %} Lịch sử mua hàng {% endblock %}</title>
+    {% load static %}
+</head>
+<body>
+    {% block content %}
+    <div class="container-fluid page-header mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container d-flex justify-content-end">
+            <span class="display-3 mb-3 animated slideInDown" style="font-weight:800; font-size:72px;"> &nbsp; Đơn hàng &nbsp;  </span>
+        </div>
+    </div>
+    <!-- Product Start -->
+    <div class="container-xxl">
+        <div class="container">
+            <div class="row g-0 gx-5 align-items-end">
+                <div class="col-lg-5">
+                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                        <h1 class="display-5 mb-3">Theo dõi đơn hàng</h1>
+                        <p>Hãy liên hệ chúng tôi <span class="text-success">+012 345 67890</span><br /> khi bạn cần sự hỗ trợ từ FreshFruit nhé!</p>
+                    </div>
+                </div>
+                <div class="col-lg-7 text-start text-lg-end wow slideInRight" data-wow-delay="0.1s">
+                    <ul class="nav nav-pills d-inline-flex justify-content-end mb-5">
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-dark border-2 active" data-bs-toggle="pill" href="#tab-0">Tất cả</a>
+                        </li> 
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-success border-2" data-bs-toggle="pill" href="#tab-1">Chờ xác nhận</a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-success border-2" data-bs-toggle="pill" href="#tab-2">Đang xử lý</a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-success border-2" data-bs-toggle="pill" href="#tab-3">Đang giao</a>
+                        </li>
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-success border-2" data-bs-toggle="pill" href="#tab-4">Đã hoàn thành</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content">
+                <!--Chờ xác nhận-->
+                <div id="tab-0" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        <h3>Tất cả đơn hàng</h3>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Mã đơn hàng</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Ngày nhận hàng dự kiến</th>
+                                    <th>Ngày nhận</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in allorders %}
+                                <tr class="text-center">
+                                    <td>{{ order.MaDH }}</td>
+                                    <td>{{ order.NgayDat|date:"d/m/Y" }}</td>
+                                    <td>{{ order.NgayDuKien|date:"d/m/Y" }}</td>
+                                    <td>
+                                        {% if order.NgayNhan %}
+                                        {{ order.NgayNhan|date:"d/m/Y" }}
+                                        {% else %}
+                                        <span class="text-secondary">--</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ order.TongTien }} đ</td>
+                                    <td>{{ order.get_TrangThai_display }}</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" onclick="openDetailModal('{{ order.MaDH }}')">Chi tiết</button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="4">Không có đơn hàng chờ xử lý.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!--Chờ xác nhận-->
+                <div id="tab-1" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        <h3>Đơn hàng chờ xác nhận</h3>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Mã đơn hàng</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Ngày nhận hàng dự kiến</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in pending_orders %}
+                                <tr class="text-center">
+                                    <td>{{ order.MaDH }}</td>
+                                    <td>{{ order.NgayDat|date:"d/m/Y" }}</td>
+                                    <td>{{ order.NgayDuKien|date:"d/m/Y" }}</td>
+                                    <td>{{ order.TongTien }}</td>
+                                    <td>{{ order.get_TrangThai_display }}</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" onclick="openDetailModal('{{ order.MaDH }}')">Chi tiết</button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="4">Không có đơn hàng chờ xử lý.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--Đang xử lý-->
+                <div id="tab-2" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        <h3>Đơn hàng đang xử lý</h3>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Mã đơn hàng</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Ngày nhận hàng dự kiến</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in processing_orders %}
+                                <tr class="text-center">
+                                    <td>{{ order.MaDH }}</td>
+                                    <td>{{ order.NgayDat|date:"d/m/Y" }}</td>
+                                    <td>{{ order.NgayDuKien|date:"d/m/Y" }}</td>
+                                    <td>{{ order.TongTien }}</td>
+                                    <td>{{ order.get_TrangThai_display }}</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" onclick="openDetailModal('{{ order.MaDH }}')">Chi tiết</button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="4">Không có đơn hàng đang xử lý.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--Đang giao hàng-->
+                <div id="tab-3" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        <h3>Đơn hàng đang giao</h3>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Mã đơn hàng</th>
+                                    <th>Ngày đặt</th>
+                                    <th>Ngày nhận hàng dự kiến</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in shipping_orders %}
+                                <tr class="text-center">
+                                    <td>{{ order.MaDH }}</td>
+                                    <td>{{ order.NgayDat|date:"d/m/Y" }}</td>
+                                    <td>{{ order.NgayDuKien|date:"d/m/Y" }}</td>
+                                    <td>{{ order.TongTien }}</td>
+                                    <td>{{ order.get_TrangThai_display }}</td>
+                                    <td>
+                                        <button class="btn btn-success complete-btn" data-id="{{ order.MaDH }}">Đã nhận hàng</button>
+                                        <button class="btn btn-outline-secondary" onclick="openDetailModal('{{ order.MaDH }}')">Chi tiết</button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="5">Không có đơn hàng đang giao.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--Đã hoàn thành-->
+                <div id="tab-4" class="tab-pane fade show p-0">
+                    <div class="row g-4">
+                        <h3>Đơn hàng đã hoàn thành</h3>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Mã đơn hàng</th>
+                                    <th>Ngày nhận</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in completed_orders %}
+                                <tr class="text-center">
+                                    <td>{{ order.MaDH }}</td>
+                                    <td>{{ order.NgayNhan|date:"d/m/Y" }}</td>
+                                    <td>{{ order.TongTien }}</td>
+                                    <td>{{ order.get_TrangThai_display }}</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" onclick="openDetailModal('{{ order.MaDH }}')">Chi tiết</button>
+                                        {% if not order.has_reviewed %}
+                                        <a class="btn btn-success" href="{% url 'UserMember:DanhGias' MaDH=order.MaDH %}">Đánh giá</a>
+                                        {% else %}
+                                        <button class="btn btn-secondary" disabled>Đã đánh giá</button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr><td colspan="4">Không có đơn hàng đã hoàn thành.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Bootstrap -->
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success" id="detailModalLabel">Chi tiết đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Mã đơn hàng:</strong> <span id="detailMaDH"></span></p>
+                    <p><strong>Tên Người đặt:</strong> <span id="detailTenKH"></span></p>
+                    <p><strong>Ngày đặt:</strong> <span id="detailNgayDat"></span></p>
+                    <p><strong>Ngày nhận:</strong> <span id="detailNgayNhan"></span></p>
+                    <p><strong>Tổng tiền:</strong> <span id="detailTongTien"></span></p>
+                    <p><strong>Trạng thái:</strong> <span id="detailTrangThai"></span></p>
+                    <h5>Danh sách sản phẩm</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tên sản phẩm</th>
+                                <th class="text-center">Giá</th>
+                                <th class="text-center">Số lượng</th>
+                                <th class="text-center">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detailSanPhamList">
+                            <!-- Nội dung sản phẩm sẽ được load vào đây -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {            
+            // Cập nhật trạng thái của đơn hàng đang giao
+            $('.complete-btn').on('click', function() {
+                var orderId = $(this).data('id');
+
+                $.ajax({
+                    url: "{% url 'UserMember:update_order' %}",
+                    method: "POST",
+                    data: {
+                        order_id: orderId,
+                        new_status: 'da_hoan_thanh',
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                            location.reload(); // Reload lại trang
+                        } else {
+                            alert(response.error);
+                        }
+                    },
+                    error: function() {
+                        alert("Đã xảy ra lỗi, vui lòng thử lại.");
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        function openDetailModal(MaDH) {
+            fetch(`/api/get_ct_donhang/${MaDH}/`)
+                .then(response => {
+                    if (!response.ok) throw new Error('API Error');
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('detailMaDH').textContent = data.MaDH;
+                    document.getElementById('detailTenKH').textContent = data.TenKH;
+                    document.getElementById('detailNgayDat').textContent = data.NgayDat;
+                    document.getElementById('detailNgayNhan').textContent = data.NgayNhan;
+                    document.getElementById('detailTongTien').textContent = `${data.TongTien.toLocaleString()} VND`;
+                    document.getElementById('detailTrangThai').textContent = data.TrangThai;
+
+                    // Hiển thị danh sách sản phẩm
+                    const sanPhamList = document.getElementById('detailSanPhamList');
+                    sanPhamList.innerHTML = ''; // Xóa dữ liệu cũ
+                    data.SanPham.forEach(product => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                        <td>${product.TenSP}</td>
+                        <td class="text-center">${product.Gia.toFixed(3)} VND</td>
+                        <td class="text-center">${product.SoLuong}</td>
+                        <td class="text-center">${product.ThanhTien.toFixed(3) } VND</td>
+                    `;
+                        sanPhamList.appendChild(row);
+                    });
+                   
+                    new bootstrap.Modal(document.getElementById('detailModal')).show();
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Không thể tải thông tin!");
+                });
+        }
+    </script>
+    {% endblock %}
+</body>
+</html>

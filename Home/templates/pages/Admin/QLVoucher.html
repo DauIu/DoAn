@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% extends "layout/admin.html" %}
+    <title>{% block title %} Quản lý Voucher {% endblock %}</title>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+
+    <div class="row">
+        <div class="col-10"><h2>Danh sách Voucher</h2></div>
+        <div class="col-2 d-flex justify-content-end align-items-center">
+            <!-- Nút Thêm sẽ mở modal -->
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalVoucher" onclick="openAddModal()">+ Thêm Voucher</button>
+        </div>
+    </div>
+
+    <table class="table table-white table-hover mt-3">
+        <thead class="table-success">
+            <tr>
+                <th class="text-center" style="width: 12.5%;">Mã Voucher</th>
+                <th class="text-center" style="width:  12.5%;">Tên Voucher</th>
+                <th class="text-center" style="width:  12.5%;">Phần Trăm Giảm</th>
+                <th class="text-center" style="width:  12.5%;">Ngày Bắt Đầu</th>
+                <th class="text-center" style="width: 12.5%; ">Ngày Kết Thúc</th>
+                <th class="text-center" style="width:  12.5%; ">Hạn Mức</th>
+                <th class="text-center" style="width: 12.5%;">Số Lượng</th>
+                <th class="text-center" style="width:  12.5%; "></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for voucher in dsVoucher %}
+            <tr>
+                
+                <th scope="row" class="text-center {% if voucher.NgayKetThuc < today %} text-danger {% else %} text-success {% endif %}">{{ voucher.MaVoucher }}</th>
+                <td class="text-center">{{ voucher.TenVoucher }}</td>
+                <td class="text-center">{{ voucher.PhanTramGiam }}%</td>
+                <td class="text-center">{{ voucher.NgayBatDau|date:"d/m/Y" }}</td>
+                <td class="text-center">{{ voucher.NgayKetThuc|date:"d/m/Y" }}</td>
+                <td class="text-center">{{ voucher.HanMucApDung|floatformat:3 }}</td>
+                <td class="text-center">{{ voucher.SoLuong }}</td>
+                <td class="text-center">
+                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalVoucher" 
+                        onclick="openEditModal('{{ voucher.MaVoucher }}', '{{ voucher.TenVoucher }}', '{{ voucher.MoTa }}', '{{ voucher.NgayBatDau }}', '{{ voucher.NgayKetThuc }}', '{{ voucher.PhanTramGiam }}', '{{ voucher.SoLuong }}')">Sửa</button>
+                    <a class="btn" style="background-color:darkorange" 
+                        href="{% url 'UserMember:xoa_voucher' voucher.MaVoucher %}" 
+                        onclick="return confirm('Bạn có chắc chắn muốn xóa voucher này không?');">Xóa</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">Không có voucher nào</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal Popup -->
+    <div class="modal fade" id="modalVoucher" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Thêm Voucher</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formVoucher" method="POST" action="{% url 'UserMember:QLVoucher' %}">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <!-- Mã Voucher không thể chỉnh sửa (readonly) khi sửa -->
+                        <div class="form-group">
+                            <label for="MaVoucher">Mã Voucher</label>
+                            <input type="text" class="form-control" id="MaVoucher" name="MaVoucher" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="TenVoucher">Tên Voucher</label>
+                            <input type="text" class="form-control" id="TenVoucher" name="TenVoucher" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="MoTa">Mô tả</label>
+                            <textarea class="form-control" id="MoTa" name="MoTa" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="NgayBatDau">Ngày Bắt Đầu</label>
+                            <input type="date" class="form-control" id="NgayBatDau" name="NgayBatDau" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="NgayKetThuc">Ngày Kết Thúc</label>
+                            <input type="date" class="form-control" id="NgayKetThuc" name="NgayKetThuc" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="PhanTramGiam">Phần Trăm Giảm (%)</label>
+                            <input type="number" class="form-control" id="PhanTramGiam" name="PhanTramGiam" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="HanMucApDung">Hạn Mức Áp Dụng</label>
+                            <input type="number" class="form-control" id="HanMucApDung" name="HanMucApDung" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="SoLuong">Số Lượng</label>
+                            <input type="number" class="form-control" id="SoLuong" name="SoLuong" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-success">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm Bootstrap và jQuery -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <script>
+        // Mở modal Thêm Voucher
+        function openAddModal() {
+            document.getElementById('modalLabel').innerText = 'Thêm Voucher';
+            // Reset các trường input
+            document.getElementById('MaVoucher').value = '';  
+            document.getElementById('MaVoucher').removeAttribute('readonly');
+            document.getElementById('TenVoucher').value = '';  
+            document.getElementById('MoTa').value = '';  
+            document.getElementById('NgayBatDau').value = '';  
+            document.getElementById('NgayKetThuc').value = '';  
+            document.getElementById('PhanTramGiam').value = '';  
+            document.getElementById('SoLuong').value = '';  
+            document.getElementById('HanMucApDung').value = '';  // Reset Hạn Mức Áp Dụng
+            document.getElementById('formVoucher').action = "{% url 'UserMember:them_voucher' %}";
+        }
+        
+        // Mở modal Sửa Voucher
+        function openEditModal(MaVoucher, TenVoucher, MoTa, NgayBatDau, NgayKetThuc, PhanTramGiam, SoLuong, HanMucApDung) {
+            document.getElementById('modalLabel').innerText = 'Sửa Voucher';
+            // Gán giá trị vào các trường input
+            document.getElementById('MaVoucher').value = MaVoucher;  
+            document.getElementById('MaVoucher').setAttribute('readonly', 'readonly');
+            document.getElementById('TenVoucher').value = TenVoucher;  
+            document.getElementById('MoTa').value = MoTa;  
+            document.getElementById('PhanTramGiam').value = PhanTramGiam;  
+            document.getElementById('SoLuong').value = SoLuong;  
+            document.getElementById('HanMucApDung').value = HanMucApDung;  // Gán giá trị Hạn Mức Áp Dụng
+            // Định dạng lại ngày bắt đầu và kết thúc
+            document.getElementById('NgayBatDau').value = NgayBatDau ? formatDate(NgayBatDau) : '';
+            document.getElementById('NgayKetThuc').value = NgayKetThuc ? formatDate(NgayKetThuc) : '';
+            var actionUrl = "{% url 'UserMember:sua_voucher' 'MaVoucherPlaceholder' %}".replace('MaVoucherPlaceholder', MaVoucher);
+            document.getElementById('formVoucher').action = actionUrl;
+        }
+    
+        function formatDate(dateString) {
+            const date = new Date(dateString);  
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth() + 1)).slice(-2);  
+            const day = ('0' + date.getDate()).slice(-2); 
+            return `${year}-${month}-${day}`; 
+        }
+    
+        // Kiểm tra ngày kết thúc không nhỏ hơn ngày bắt đầu
+        function validateDate() {
+            const startDate = document.getElementById('NgayBatDau').value;
+            const endDate = document.getElementById('NgayKetThuc').value;
+    
+            if (startDate && endDate) {
+                if (new Date(endDate) < new Date(startDate)) {
+                    alert("Ngày kết thúc không được nhỏ hơn ngày bắt đầu!");
+                    document.getElementById('NgayKetThuc').value = ''; // Reset ngày kết thúc nếu không hợp lệ
+                }
+            }
+        }
+    
+        // Đặt sự kiện onchange cho các ngày
+        document.getElementById('NgayBatDau').addEventListener('change', validateDate);
+        document.getElementById('NgayKetThuc').addEventListener('change', validateDate);
+    </script>
+
+    {% endblock %}
+</body>
+</html>
+
